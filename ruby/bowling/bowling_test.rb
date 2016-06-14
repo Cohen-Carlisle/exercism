@@ -57,7 +57,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_score_a_spare_that_is_not_on_the_last_frame
-    skip
     @game.roll(5)
     @game.roll(5)
     @game.roll(3)
@@ -68,7 +67,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_score_multiple_strikes_in_a_row
-    skip
     @game.roll(10)
     @game.roll(10)
     @game.roll(10)
@@ -80,7 +78,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_score_multiple_spares_in_a_row
-    skip
     @game.roll(5)
     @game.roll(5)
     @game.roll(3)
