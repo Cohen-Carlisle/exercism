@@ -1,4 +1,6 @@
 class Game
+  VERSION = 1
+
   def initialize
     @score = 0
     @frame = 1
@@ -103,8 +105,4 @@ class Game
   def game_over?
     @frame > 10 && @scores.empty?
   end
-end
-
-module BookKeeping
-  VERSION = 1
 end
