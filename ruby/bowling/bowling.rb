@@ -10,8 +10,10 @@ class Game
   end
 
   def roll(pins)
+    raise_error_if_invalid(pins)
+
     if fill_ball?
-      # do nothing
+      fill_ball(pins)
     elsif strike?(pins)
       strike
     elsif continue_frame?(pins)
@@ -23,6 +25,7 @@ class Game
     else
       raise 'wat'
     end
+
     handle_score(pins)
   end
 
@@ -30,6 +33,10 @@ class Game
 
   def fill_ball?
     @frame > 10
+  end
+
+  def fill_ball(pins)
+    @last_roll = pins if pins < 10
   end
 
   def strike?(pins)
@@ -80,6 +87,11 @@ class Game
     end
     @score += (@scores.select { |s| s.all? }.flatten.inject(:+) || 0)
     @scores.delete_if { |s| s.all? }
+  end
+
+  def raise_error_if_invalid(pins)
+    raise "Pins must have a value from 0 to 10" unless (0..10).cover?(pins)
+    raise "Pin count exceeds pins on the lane" if (@last_roll || 0) + pins > 10
   end
 end
 
