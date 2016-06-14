@@ -172,7 +172,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_not_allow_rolls_after_the_tenth_frame
-    skip
     roll_n_times(20, 0)
     assert_raises(
       RuntimeError,
@@ -183,7 +182,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_not_calculate_score_before_fill_balls_have_been_played
-    skip
     roll_n_times(10, 10)
 
     assert_raises RuntimeError, 'Game is not yet over, cannot score!' do

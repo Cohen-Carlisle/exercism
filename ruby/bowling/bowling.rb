@@ -28,7 +28,7 @@ class Game
   end
 
   def score
-    unless @frame > 10 && @scores.empty?
+    unless game_over?
       raise "Score cannot be taken until the end of the game"
     end
     @score
@@ -97,6 +97,11 @@ class Game
   def raise_error_if_invalid(pins)
     raise "Pins must have a value from 0 to 10" unless (0..10).cover?(pins)
     raise "Pin count exceeds pins on the lane" if (@last_roll || 0) + pins > 10
+    raise "Should not be able to roll after game is over" if game_over?
+  end
+
+  def game_over?
+    @frame > 10 && @scores.empty?
   end
 end
 
