@@ -10,7 +10,9 @@ class Game
   end
 
   def roll(pins)
-    if strike?(pins)
+    if fill_ball?
+      # do nothing
+    elsif strike?(pins)
       strike
     elsif continue_frame?(pins)
       continue_frame(pins)
@@ -26,8 +28,12 @@ class Game
 
   private
 
+  def fill_ball?
+    @frame > 10
+  end
+
   def strike?(pins)
-    @roll_in_frame == 1 && pins == 10
+    @frame <= 10 && @roll_in_frame == 1 && pins == 10
   end
 
   def strike
@@ -36,7 +42,7 @@ class Game
   end
 
   def continue_frame?(pins)
-    @roll_in_frame == 1 && pins < 10
+    @frame <= 10 && @roll_in_frame == 1 && pins < 10
   end
 
   def continue_frame(pins)
@@ -46,7 +52,7 @@ class Game
   end
 
   def spare?(pins)
-    @roll_in_frame == 2 && @last_roll + pins == 10
+    @frame <= 10 && @roll_in_frame == 2 && @last_roll + pins == 10
   end
 
   def spare
@@ -57,7 +63,7 @@ class Game
   end
 
   def open_frame?(pins)
-    @roll_in_frame == 2 && @last_roll + pins < 10
+    @frame <= 10 && @roll_in_frame == 2 && @last_roll + pins < 10
   end
 
   def open_frame(pins)
