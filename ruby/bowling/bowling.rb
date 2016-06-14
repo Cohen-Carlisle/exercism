@@ -1,6 +1,4 @@
 class Game
-  attr_reader :score
-
   def initialize
     @score = 0
     @frame = 1
@@ -27,6 +25,13 @@ class Game
     end
 
     handle_score(pins)
+  end
+
+  def score
+    unless @frame > 10 && @scores.empty?
+      raise "Score cannot be taken until the end of the game"
+    end
+    @score
   end
 
   private

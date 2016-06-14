@@ -154,7 +154,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_not_allow_to_take_score_at_the_beginning
-    skip
     assert_raises(
       RuntimeError,
       'Score cannot be taken until the end of the game',
@@ -164,7 +163,6 @@ class GameTest < Minitest::Test
   end
 
   def test_should_not_allow_to_take_score_before_game_has_ended
-    skip
     roll_n_times(19, 5)
     assert_raises(
       RuntimeError,
