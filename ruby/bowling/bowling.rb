@@ -16,14 +16,12 @@ class Game
       fill_ball(pins)
     elsif strike?(pins)
       strike
-    elsif continue_frame?(pins)
-      continue_frame(pins)
     elsif spare?(pins)
       spare
     elsif open_frame?(pins)
       open_frame(pins)
     else
-      raise 'wat'
+      continue_frame(pins)
     end
 
     handle_score(pins)
@@ -53,16 +51,6 @@ class Game
     reset_pins
   end
 
-  def continue_frame?(pins)
-    @frame <= 10 && @roll_in_frame == 1 && pins < 10
-  end
-
-  def continue_frame(pins)
-    @pending_scores << [nil]
-    @pins_remaining -= pins
-    @roll_in_frame += 1
-  end
-
   def spare?(pins)
     @roll_in_frame == 2 && @pins_remaining == pins
   end
@@ -79,6 +67,12 @@ class Game
   def open_frame(pins)
     @pending_scores << [nil]
     reset_pins
+  end
+
+  def continue_frame(pins)
+    @pending_scores << [nil]
+    @pins_remaining -= pins
+    @roll_in_frame += 1
   end
 
   def handle_score(pins)
