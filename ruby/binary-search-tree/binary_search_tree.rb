@@ -1,42 +1,30 @@
-require 'forwardable'
-
 class Bst
-  extend Forwardable
-  def_delegators :@root, :data, :left, :right
-
+  attr_reader :data
+  attr_accessor :left, :right
   def initialize(data)
-    @root = Node.new(data)
+    @data = data
+    @left = nil
+    @right = nil
   end
 
-  def insert(data)
-    current_node = @root
+  def insert(new_data)
+    current_node = self
     while current_node
-      if data <= current_node.data
+      if new_data <= current_node.data
         if current_node.left
           current_node = current_node.left
         else
-          current_node.left = Node.new(data)
+          current_node.left = self.class.new(new_data)
           current_node = nil
         end
       else
         if current_node.right
           current_node = current_node.right
         else
-          current_node.right = Node.new(data)
+          current_node.right = self.class.new(new_data)
           current_node = nil
         end
       end
-    end
-  end
-
-  class Node
-    attr_reader :data
-    attr_accessor :left, :right
-
-    def initialize(data)
-      @data = data
-      @left = nil
-      @right = nil
     end
   end
 end
