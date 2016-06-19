@@ -8,23 +8,10 @@ class Bst
   end
 
   def insert(new_data)
-    current_node = self
-    while current_node
-      if new_data <= current_node.data
-        if current_node.left
-          current_node = current_node.left
-        else
-          current_node.left = self.class.new(new_data)
-          current_node = nil
-        end
-      else
-        if current_node.right
-          current_node = current_node.right
-        else
-          current_node.right = self.class.new(new_data)
-          current_node = nil
-        end
-      end
+    if new_data <= data
+      left ? left.insert(new_data) : self.left = self.class.new(new_data)
+    else
+      right ? right.insert(new_data) : self.right = self.class.new(new_data)
     end
   end
 end
