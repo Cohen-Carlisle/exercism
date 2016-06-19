@@ -1,4 +1,6 @@
 class Bst
+  VERSION = 1
+
   attr_reader :data
   attr_accessor :left, :right
   def initialize(data)
@@ -13,5 +15,12 @@ class Bst
     else
       right ? right.insert(new_data) : self.right = self.class.new(new_data)
     end
+  end
+
+  def each(&block)
+    return to_enum unless block_given?
+    left && left.each(&block)
+    yield data
+    right && right.each(&block)
   end
 end
