@@ -4,6 +4,6 @@ class Array
   end
 
   def discard
-    each_with_object(self.class.new) { |e, out| out << e unless yield(e) }
+    keep { |e| !yield(e) }
   end
 end
