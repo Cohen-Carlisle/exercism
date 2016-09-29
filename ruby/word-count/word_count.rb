@@ -2,10 +2,20 @@ class Phrase
   VERSION = 1
 
   def initialize(phrase)
-    @words = phrase.downcase.scan(/\b[\w']+\b/)
+    @phrase = phrase
   end
 
   def word_count
-    @words.each_with_object(Hash.new(0)) { |word, hash| hash[word] += 1 }
+    Hash[word_count_ary]
+  end
+
+  private
+
+  def words
+    @phrase.downcase.scan(/\b[\w']+\b/)
+  end
+
+  def word_count_ary
+    words.group_by { |word| word }.map { |k,v| [k,v.count] }
   end
 end
