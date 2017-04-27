@@ -14,9 +14,9 @@ defmodule DNA do
   """
   @spec count([char], char) :: non_neg_integer
   def count(strand, nucleotide) do
-    raise_unless_valid_nucelotide(nucleotide)
+    raise_unless_valid_nucleotide(nucleotide)
     Enum.count(strand, fn(n) ->
-      raise_unless_valid_nucelotide(n)
+      raise_unless_valid_nucleotide(n)
       n == nucleotide
     end)
   end
@@ -35,7 +35,7 @@ defmodule DNA do
     histo = for n <- @nucleotides, into: %{}, do: {n, count(strand, n)}
   end
 
-  defp raise_unless_valid_nucelotide(n) do
+  defp raise_unless_valid_nucleotide(n) do
     if !Enum.member?(@nucleotides, n) do
       raise ArgumentError
     end
