@@ -27,6 +27,6 @@ defmodule SecretHandshake do
 
   defp do_commands(acc, do?, todo)
   defp do_commands(acc, false, _), do: acc
-  defp do_commands(acc, true, fun) when is_function(fun, 1), do: fun.(acc)
-  defp do_commands(acc, true, str), do: List.insert_at(acc, 0, str)
+  defp do_commands(acc, true, str) when is_binary(str), do: [str | acc]
+  defp do_commands(acc, true, fun), do: fun.(acc)
 end
