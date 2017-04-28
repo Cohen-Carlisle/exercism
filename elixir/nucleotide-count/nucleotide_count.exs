@@ -1,4 +1,4 @@
-defmodule DNA do
+defmodule NucleotideCount do
   @nucleotides [?A, ?C, ?G, ?T]
 
   @doc """
@@ -14,11 +14,7 @@ defmodule DNA do
   """
   @spec count([char], char) :: non_neg_integer
   def count(strand, nucleotide) do
-    raise_unless_valid_nucleotide(nucleotide)
-    Enum.count(strand, fn(n) ->
-      raise_unless_valid_nucleotide(n)
-      n == nucleotide
-    end)
+    Enum.count(strand, &(&1 == nucleotide))
   end
 
 
@@ -33,11 +29,5 @@ defmodule DNA do
   @spec histogram([char]) :: map
   def histogram(strand) do
     histo = for n <- @nucleotides, into: %{}, do: {n, count(strand, n)}
-  end
-
-  defp raise_unless_valid_nucleotide(n) do
-    if !Enum.member?(@nucleotides, n) do
-      raise ArgumentError
-    end
   end
 end
