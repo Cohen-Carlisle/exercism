@@ -17,50 +17,17 @@ defmodule SecretHandshake do
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
     []
-    |> maybe_wink(code)
-    |> maybe_double_blink(code)
-    |> maybe_close_your_eyes(code)
-    |> maybe_jump(code)
-    |> maybe_reverse(code)
+    |> do_commands(code &&& 0x01)
+    |> do_commands(code &&& 0x02)
+    |> do_commands(code &&& 0x04)
+    |> do_commands(code &&& 0x08)
+    |> do_commands(code &&& 0x10)
   end
 
-  defp maybe_wink(acc, code) do
-    if (code &&& 1) == 1 do
-      acc ++ ["wink"]
-    else
-      acc
-    end
-  end
-
-  defp maybe_double_blink(acc, code) do
-    if (code &&& 2) == 2 do
-      acc ++ ["double blink"]
-    else
-      acc
-    end
-  end
-
-  defp maybe_close_your_eyes(acc, code) do
-    if (code &&& 4) == 4 do
-      acc ++ ["close your eyes"]
-    else
-      acc
-    end
-  end
-
-  defp maybe_jump(acc, code) do
-    if (code &&& 8) == 8 do
-      acc ++ ["jump"]
-    else
-      acc
-    end
-  end
-
-  defp maybe_reverse(acc, code) do
-    if (code &&& 16) == 16 do
-      Enum.reverse(acc)
-    else
-      acc
-    end
-  end
+  defp do_commands(acc, 0x01), do: acc ++ ["wink"]
+  defp do_commands(acc, 0x02), do: acc ++ ["double blink"]
+  defp do_commands(acc, 0x04), do: acc ++ ["close your eyes"]
+  defp do_commands(acc, 0x08), do: acc ++ ["jump"]
+  defp do_commands(acc, 0x10), do: acc |> Enum.reverse
+  defp do_commands(acc, _num), do: acc
 end
