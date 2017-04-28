@@ -14,20 +14,19 @@ defmodule SecretHandshake do
 
   10000 = Reverse the order of the operations in the secret handshake
   """
+
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
     []
-    |> do_commands(code &&& 0x01)
-    |> do_commands(code &&& 0x02)
-    |> do_commands(code &&& 0x04)
-    |> do_commands(code &&& 0x08)
-    |> do_commands(code &&& 0x10)
+    |> do_commands(0x08 == (code &&& 0x08), "jump")
+    |> do_commands(0x04 == (code &&& 0x04), "close your eyes")
+    |> do_commands(0x02 == (code &&& 0x02), "double blink")
+    |> do_commands(0x01 == (code &&& 0x01), "wink")
+    |> do_commands(0x10 == (code &&& 0x10), &Enum.reverse/1)
   end
 
-  defp do_commands(acc, 0x01), do: acc ++ ["wink"]
-  defp do_commands(acc, 0x02), do: acc ++ ["double blink"]
-  defp do_commands(acc, 0x04), do: acc ++ ["close your eyes"]
-  defp do_commands(acc, 0x08), do: acc ++ ["jump"]
-  defp do_commands(acc, 0x10), do: acc |> Enum.reverse
-  defp do_commands(acc, _num), do: acc
+  defp do_commands(acc, do?, todo)
+  defp do_commands(acc, false, _), do: acc
+  defp do_commands(acc, true, fun) when is_function(fun, 1), do: fun.(acc)
+  defp do_commands(acc, true, str), do: List.insert_at(acc, 0, str)
 end
