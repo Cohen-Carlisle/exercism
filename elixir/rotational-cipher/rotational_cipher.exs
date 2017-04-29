@@ -8,14 +8,14 @@ defmodule RotationalCipher do
   """
   @spec rotate(text :: String.t(), shift :: integer) :: String.t()
   def rotate(text, shift) do
-    to_string(for letter <- to_charlist(text), do: do_rotate(letter, shift))
+    for << char <- text >>, into: "", do: << do_rotate(char, shift) >>
   end
 
-  defp do_rotate(letter, shift) when letter in ?a..?z do
-    rem(letter - ?a + shift, 26) + ?a
+  defp do_rotate(char, shift) when char in ?a..?z do
+    rem(char - ?a + shift, 26) + ?a
   end
-  defp do_rotate(letter, shift) when letter in ?A..?Z do
-    rem(letter - ?A + shift, 26) + ?A
+  defp do_rotate(char, shift) when char in ?A..?Z do
+    rem(char - ?A + shift, 26) + ?A
   end
-  defp do_rotate(letter, _shift), do: letter
+  defp do_rotate(char, _shift), do: char
 end
