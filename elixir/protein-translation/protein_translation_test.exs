@@ -10,78 +10,80 @@ defmodule ProteinTranslationTest do
 
   #@tag :pending
   test "AUG translates to methionine" do
-    assert ProteinTranslation.of_codon("AUG") == { :ok, "Methionine" }
+    assert ProteinTranslation.of_codon("AUG") == "Methionine"
   end
 
   # @tag :pending
   test "identifies Phenylalanine codons" do
-    assert ProteinTranslation.of_codon("UUU") == { :ok, "Phenylalanine" }
-    assert ProteinTranslation.of_codon("UUC") == { :ok, "Phenylalanine" }
+    assert ProteinTranslation.of_codon("UUU") == "Phenylalanine"
+    assert ProteinTranslation.of_codon("UUC") == "Phenylalanine"
   end
 
   # @tag :pending
   test "identifies Leucine codons" do
-    assert ProteinTranslation.of_codon("UUA") == { :ok, "Leucine" }
-    assert ProteinTranslation.of_codon("UUG") == { :ok, "Leucine" }
+    assert ProteinTranslation.of_codon("UUA") == "Leucine"
+    assert ProteinTranslation.of_codon("UUG") == "Leucine"
   end
 
   # @tag :pending
   test "identifies Serine codons" do
-    assert ProteinTranslation.of_codon("UCU") == { :ok, "Serine" }
-    assert ProteinTranslation.of_codon("UCC") == { :ok, "Serine" }
-    assert ProteinTranslation.of_codon("UCA") == { :ok, "Serine" }
-    assert ProteinTranslation.of_codon("UCG") == { :ok, "Serine" }
+    assert ProteinTranslation.of_codon("UCU") == "Serine"
+    assert ProteinTranslation.of_codon("UCC") == "Serine"
+    assert ProteinTranslation.of_codon("UCA") == "Serine"
+    assert ProteinTranslation.of_codon("UCG") == "Serine"
   end
 
   # @tag :pending
   test "identifies Tyrosine codons" do
-    assert ProteinTranslation.of_codon("UAU") == { :ok, "Tyrosine" }
-    assert ProteinTranslation.of_codon("UAC") == { :ok, "Tyrosine" }
+    assert ProteinTranslation.of_codon("UAU") == "Tyrosine"
+    assert ProteinTranslation.of_codon("UAC") == "Tyrosine"
   end
 
   # @tag :pending
   test "identifies Cysteine codons" do
-    assert ProteinTranslation.of_codon("UGU") == { :ok, "Cysteine" }
-    assert ProteinTranslation.of_codon("UGC") == { :ok, "Cysteine" }
+    assert ProteinTranslation.of_codon("UGU") == "Cysteine"
+    assert ProteinTranslation.of_codon("UGC") == "Cysteine"
   end
 
   # @tag :pending
   test "identifies Tryptophan codons" do
-    assert ProteinTranslation.of_codon("UGG") == { :ok, "Tryptophan" }
+    assert ProteinTranslation.of_codon("UGG") == "Tryptophan"
   end
 
   # @tag :pending
   test "identifies stop codons" do
-    assert ProteinTranslation.of_codon("UAA") == { :ok, "STOP" }
-    assert ProteinTranslation.of_codon("UAG") == { :ok, "STOP" }
-    assert ProteinTranslation.of_codon("UGA") == { :ok, "STOP" }
+    assert ProteinTranslation.of_codon("UAA") == :stop
+    assert ProteinTranslation.of_codon("UAG") == :stop
+    assert ProteinTranslation.of_codon("UGA") == :stop
   end
 
   # @tag :pending
   test "translates rna strand into correct protein" do
     strand = "AUGUUUUGG"
-    assert ProteinTranslation.of_rna(strand) == { :ok, ~w(Methionine Phenylalanine Tryptophan) }
+    assert ProteinTranslation.of_rna(strand) == ~w(Methionine Phenylalanine Tryptophan)
   end
 
   # @tag :pending
   test "stops translation if stop codon present" do
     strand = "AUGUUUUAA"
-    assert ProteinTranslation.of_rna(strand) == { :ok, ~w(Methionine Phenylalanine) }
+    assert ProteinTranslation.of_rna(strand) == ~w(Methionine Phenylalanine)
   end
 
   # @tag :pending
   test "stops translation of longer strand" do
     strand = "UGGUGUUAUUAAUGGUUU"
-    assert ProteinTranslation.of_rna(strand) == { :ok, ~w(Tryptophan Cysteine Tyrosine) }
+    assert ProteinTranslation.of_rna(strand) == ~w(Tryptophan Cysteine Tyrosine)
   end
 
   # @tag :pending
   test "invalid RNA" do
-    assert ProteinTranslation.of_rna("CARROT") == { :error, "invalid RNA" }
+    assert_raise RuntimeError, "invalid RNA", fn ->
+      ProteinTranslation.of_rna("CARROT")
+    end
   end
 
   # @tag :pending
   test "invalid codon" do
-    assert ProteinTranslation.of_codon("INVALID") == { :error, "invalid codon" }
+    assert ProteinTranslation.of_codon("INVALID") == nil
   end
 end
