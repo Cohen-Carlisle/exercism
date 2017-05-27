@@ -44,7 +44,7 @@ defmodule PigLatin do
     "#{String.slice(word, 2..-1)}#{String.slice(word, 0..1)}ay"
   end
   defp translate_word(word) do
-    if String.match?(word, ~r/^.qu/) do
+    if String.match?(word, ~r/^[^aeoui]qu/) do
       "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
     else
       "#{String.slice(word, 1..-1)}#{String.first(word)}ay"
