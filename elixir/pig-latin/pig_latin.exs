@@ -21,32 +21,22 @@ defmodule PigLatin do
     |> Enum.join(" ")
   end
 
-  defp translate_word("a" <> _ = word), do: "#{word}ay"
-  defp translate_word("e" <> _ = word), do: "#{word}ay"
-  defp translate_word("i" <> _ = word), do: "#{word}ay"
-  defp translate_word("o" <> _ = word), do: "#{word}ay"
-  defp translate_word("u" <> _ = word), do: "#{word}ay"
-  defp translate_word("yt" <> _ = word), do: "#{word}ay"
-  defp translate_word("xr" <> _ = word), do: "#{word}ay"
-  defp translate_word("sch" <> _ = word) do
-    "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
-  end
-  defp translate_word("squ" <> _ = word) do
-    "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
-  end
-  defp translate_word("thr" <> _ = word) do
-    "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
-  end
-  defp translate_word("ch" <> _ = word) do
-    "#{String.slice(word, 2..-1)}#{String.slice(word, 0..1)}ay"
-  end
-  defp translate_word("qu" <> _ = word) do
-    "#{String.slice(word, 2..-1)}#{String.slice(word, 0..1)}ay"
-  end
-  defp translate_word("th" <> _ = word) do
-    "#{String.slice(word, 2..-1)}#{String.slice(word, 0..1)}ay"
-  end
-  defp translate_word(word) do
-    "#{String.slice(word, 1..-1)}#{String.first(word)}ay"
+  defp translate_word("a"   <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("e"   <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("i"   <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("o"   <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("u"   <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("yt"  <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("xr"  <> _ = word), do: do_translate_word(0, word)
+  defp translate_word("sch" <> _ = word), do: do_translate_word(3, word)
+  defp translate_word("squ" <> _ = word), do: do_translate_word(3, word)
+  defp translate_word("thr" <> _ = word), do: do_translate_word(3, word)
+  defp translate_word("ch"  <> _ = word), do: do_translate_word(2, word)
+  defp translate_word("qu"  <> _ = word), do: do_translate_word(2, word)
+  defp translate_word("th"  <> _ = word), do: do_translate_word(2, word)
+  defp translate_word(word),              do: do_translate_word(1, word)
+
+  defp do_translate_word(n, word) do
+    String.slice(word, n..-1) <> String.slice(word, 0, n) <> "ay"
   end
 end
