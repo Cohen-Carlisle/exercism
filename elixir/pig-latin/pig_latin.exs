@@ -31,6 +31,9 @@ defmodule PigLatin do
   defp translate_word("sch" <> _ = word) do
     "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
   end
+  defp translate_word("squ" <> _ = word) do
+    "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
+  end
   defp translate_word("thr" <> _ = word) do
     "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
   end
@@ -44,10 +47,6 @@ defmodule PigLatin do
     "#{String.slice(word, 2..-1)}#{String.slice(word, 0..1)}ay"
   end
   defp translate_word(word) do
-    if String.match?(word, ~r/^[^aeoui]qu/) do
-      "#{String.slice(word, 3..-1)}#{String.slice(word, 0..2)}ay"
-    else
-      "#{String.slice(word, 1..-1)}#{String.first(word)}ay"
-    end
+    "#{String.slice(word, 1..-1)}#{String.first(word)}ay"
   end
 end
