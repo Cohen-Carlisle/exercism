@@ -21,20 +21,26 @@ defmodule PigLatin do
     |> Enum.join(" ")
   end
 
-  defp translate_word("a"   <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("e"   <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("i"   <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("o"   <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("u"   <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("yt"  <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("xr"  <> _ = word), do: do_translate_word(0, word)
-  defp translate_word("sch" <> _ = word), do: do_translate_word(3, word)
-  defp translate_word("squ" <> _ = word), do: do_translate_word(3, word)
-  defp translate_word("thr" <> _ = word), do: do_translate_word(3, word)
-  defp translate_word("ch"  <> _ = word), do: do_translate_word(2, word)
-  defp translate_word("qu"  <> _ = word), do: do_translate_word(2, word)
-  defp translate_word("th"  <> _ = word), do: do_translate_word(2, word)
-  defp translate_word(word),              do: do_translate_word(1, word)
+  defp translate_word(word) do
+    word
+    |> calculate_offset
+    |> do_translate_word(word)
+  end
+
+  defp calculate_offset(word) do
+    starts_with_vowel_sound?(word) && 0 || consecutive_consonant_offset(word)
+  end
+
+  defp starts_with_vowel_sound?(word) do
+    Regex.match?(~r/^(x[^aeiou]|y[^aeiou]|[aeiou])/i, word)
+  end
+
+  defp consecutive_consonant_offset(word) do
+    ~r/^(qu|[^aeiou])+/i
+    |> Regex.run(word)
+    |> List.first
+    |> String.length
+  end
 
   defp do_translate_word(n, word) do
     String.slice(word, n..-1) <> String.slice(word, 0, n) <> "ay"
