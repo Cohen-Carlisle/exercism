@@ -10,12 +10,8 @@ defmodule TwelveDays do
   Given a `starting_verse` and an `ending_verse`, return the verses for each
   included day, one per line.
   """
-  @spec verses(beginning :: integer, ending :: integer) :: String.t()
-  def verses(beginning, ending) do
-    beginning..ending
-    |> Enum.reduce("", fn(n, acc) -> acc <> verse(n) <> "\n" end)
-    |> String.trim_trailing
-  end
+  @spec verses(first :: integer, last :: integer) :: String.t()
+  def verses(first, last), do: Enum.map_join(first..last, "\n", &(verse(&1)))
 
   @doc """
   Sing all 12 verses, in order, one verse per line.
@@ -60,8 +56,8 @@ defmodule TwelveDays do
   defp all_gifts(1), do: gift(1) <> "."
   defp all_gifts(num) do
     num..2
-    |> Enum.reduce("", fn(n, acc) -> acc <> gift(n) <> ", " end)
-    |> concat(["and ", gift(1), "."])
+    |> Enum.map_join(", ", &(gift(&1)))
+    |> concat([", and ", gift(1), "."])
   end
 
   @spec concat(init :: String.t(), strings :: list) :: String.t()
