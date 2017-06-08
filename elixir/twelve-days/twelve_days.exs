@@ -57,9 +57,6 @@ defmodule TwelveDays do
   defp all_gifts(num) do
     num..2
     |> Enum.map_join(", ", &(gift(&1)))
-    |> concat([", and ", gift(1), "."])
+    |> Kernel.<>(", and #{gift(1)}.")
   end
-
-  @spec concat(init :: String.t(), strings :: list) :: String.t()
-  defp concat(init, strings), do: init <> Enum.join(strings)
 end
