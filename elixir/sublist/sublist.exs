@@ -2,7 +2,7 @@ defmodule Sublist do
   def compare(a, b), do: do_compare(sublist?(a, b), sublist?(b, a))
 
   def sublist?(a, b) when length(a) < length(b) do
-    a === Enum.slice(b, 0, length(a)) || sublist?(a, tl(b))
+    a === Enum.take(b, length(a)) || sublist?(a, tl(b))
   end
   def sublist?(a, b) when length(a) == length(b), do: a === b
   def sublist?(_, _), do: false
