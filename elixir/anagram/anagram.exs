@@ -20,12 +20,15 @@ defmodule Anagram do
 
     candidates
     |> Enum.with_index()
-    |> Enum.map(&matching_or_nil(&1, index_matches))
-    |> Enum.reject(&is_nil/1)
-    |> Enum.reject(&(downcased_base == String.downcase(&1)))
+    |> Enum.map(&matching_candidate_or_nil(&1, index_matches))
+    |> Enum.reject(&nil_or_base_word?(&1, downcased_base))
   end
 
-  defp matching_or_nil({candidate, index}, index_matches) do
+  defp matching_candidate_or_nil({candidate, index}, index_matches) do
     (Enum.at(index_matches, index) && candidate) || nil
+  end
+
+  defp nil_or_base_word?(candidate, downcased_base) do
+    is_nil(candidate) || String.downcase(candidate) == downcased_base || false
   end
 end
