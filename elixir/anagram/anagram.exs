@@ -11,24 +11,26 @@ defmodule Anagram do
       |> String.codepoints()
       |> Enum.sort()
 
-    index_matches =
-      candidates
-      |> Enum.map(&String.downcase/1)
+    downcased_candidates = Enum.map(candidates, &String.downcase/1)
+
+    index_matches? =
+      downcased_candidates
       |> Enum.map(&String.codepoints/1)
       |> Enum.map(&Enum.sort/1)
       |> Enum.map(&(base_matcher == &1))
 
     candidates
     |> Enum.with_index()
-    |> Enum.map(&matching_candidate_or_nil(&1, index_matches))
-    |> Enum.reject(&nil_or_base_word?(&1, downcased_base))
+    |> Enum.map(&matching_or_nil(&1, index_matches?))
+    |> Enum.reject(&nil_or_base_word?(&1, downcased_base, downcased_candidates))
+    |> Enum.map(fn {candidate, _index} -> candidate end)
   end
 
-  defp matching_candidate_or_nil({candidate, index}, index_matches) do
-    (Enum.at(index_matches, index) && candidate) || nil
+  defp matching_or_nil({_candidate, index} = tuple, index_matches?) do
+    (Enum.at(index_matches?, index) && tuple) || {nil, index}
   end
 
-  defp nil_or_base_word?(candidate, downcased_base) do
-    is_nil(candidate) || String.downcase(candidate) == downcased_base || false
+  defp nil_or_base_word?({candidate, index}, downcased_base, downcased_candidates) do
+    is_nil(candidate) || Enum.at(downcased_candidates, index) == downcased_base || false
   end
 end
