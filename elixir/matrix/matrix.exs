@@ -49,13 +49,10 @@ defmodule Matrix do
   """
   @spec columns(matrix :: %Matrix{}) :: list(list(integer))
   def columns(matrix) do
-    col_count =
-      matrix
-      |> Map.fetch!(:matrix)
-      |> Enum.at(0)
-      |> Enum.count()
-
-    for i <- 0..(col_count - 1), do: Enum.map(matrix.matrix, &Enum.at(&1, i))
+    matrix
+    |> Map.fetch!(:matrix)
+    |> List.zip()
+    |> Enum.map(&Tuple.to_list/1)
   end
 
   @doc """
