@@ -42,7 +42,7 @@ defmodule BracketPush do
     do_check_brackets(rest, tail)
   end
 
-  defp do_check_brackets(<<char::8, rest::binary>>, bracket_list) when char not in @right_brackets do
+  defp do_check_brackets(<<char, rest::binary>>, bracket_list) when char not in @right_brackets do
     do_check_brackets(rest, bracket_list)
   end
 
