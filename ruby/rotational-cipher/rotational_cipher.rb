@@ -1,17 +1,12 @@
 module RotationalCipher
-  class << self
-    def rotate(plaintext, shift)
-      plaintext.codepoints.map do |codepoint|
-        case codepoint
-        when ?a.ord..?z.ord
-          (codepoint + shift - ?a.ord) % 26 + ?a.ord
-        when ?A.ord..?Z.ord
-          (codepoint + shift - ?A.ord) % 26 + ?A.ord
-        else
-          codepoint
-        end
-      end.map { |rc| rc.chr }.join
-    end
+  UPPERCASE_ALPHABET = (?A..?Z).to_a
+  LOWERCASE_ALPHABET = UPPERCASE_ALPHABET.map(&:downcase)
+
+  def self.rotate(plaintext, shift)
+    plaintext.tr(
+      (UPPERCASE_ALPHABET + LOWERCASE_ALPHABET).join,
+      (UPPERCASE_ALPHABET.rotate(shift) + LOWERCASE_ALPHABET.rotate(shift)).join
+    )
   end
 end
 
