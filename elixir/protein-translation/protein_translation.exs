@@ -4,17 +4,24 @@ defmodule ProteinTranslation do
   """
   @spec of_rna(String.t()) :: { atom,  list(String.t()) }
   def of_rna(rna) do
-    {head_codon, rna_tail} = String.split_at(rna, 3)
-    protein = of_codon(head_codon)
-    do_of_rna(protein, rna_tail, [])
+    do_of_rna(rna, [])
   end
-  defp do_of_rna({:error, _}, _rna, _acc), do: {:error, "invalid RNA"}
-  defp do_of_rna({:ok, "STOP"}, _rna, acc), do: {:ok, acc}
-  defp do_of_rna({:ok, codon}, "", acc), do: {:ok, acc ++ [codon]}
-  defp do_of_rna({:ok, codon}, rna, acc) do
-    {head_codon, rna_tail} = String.split_at(rna, 3)
-    protein = of_codon(head_codon)
-    do_of_rna(protein, rna_tail, acc ++ [codon])
+
+  defp do_of_rna(<<head_codon::bytes-size(3), rna_tail::binary>>, acc) do
+    with {:ok, "STOP"} <- of_codon(head_codon) do
+      {:ok, Enum.reverse(acc)}
+    else
+      {:ok, protein} -> do_of_rna(rna_tail, [protein | acc])
+      {:error, "invalid codon"} -> {:error, "invalid RNA"}
+    end
+  end
+
+  defp do_of_rna("", acc) do
+    {:ok, Enum.reverse(acc)}
+  end
+
+  defp do_of_rna(_rna, _acc) do
+    {:error, "invalid RNA"}
   end
 
   @spec of_codon(String.t()) :: { atom, String.t() }
