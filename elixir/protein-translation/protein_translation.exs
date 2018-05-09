@@ -8,9 +8,8 @@ defmodule ProteinTranslation do
   end
 
   defp do_of_rna(<<head_codon::bytes-size(3), rna_tail::binary>>, acc) do
-    with {:ok, "STOP"} <- of_codon(head_codon) do
-      {:ok, Enum.reverse(acc)}
-    else
+    case of_codon(head_codon) do
+      {:ok, "STOP"} -> {:ok, Enum.reverse(acc)}
       {:ok, protein} -> do_of_rna(rna_tail, [protein | acc])
       {:error, "invalid codon"} -> {:error, "invalid RNA"}
     end
