@@ -1,34 +1,78 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("rle.exs")
+  Code.load_file("rle.exs", __DIR__)
 end
 
-ExUnit.start
-ExUnit.configure exclude: :pending, trace: true
+ExUnit.start()
+ExUnit.configure(exclude: :pending, trace: true)
 
 defmodule RunLengthEncoderTest do
   use ExUnit.Case
 
-  test "empty string returns empty" do
+  test "encode empty string" do
     assert RunLengthEncoder.encode("") === ""
   end
 
-  test "simple string gets encoded" do
-    assert RunLengthEncoder.encode("AAA") === "3A"
+  # @tag :pending
+  test "encode single characters only are encoded without count" do
+    assert RunLengthEncoder.encode("XYZ") === "XYZ"
   end
 
-  test "more complicated string" do
-    assert RunLengthEncoder.encode("HORSE") == "1H1O1R1S1E"
+  # @tag :pending
+  test "encode string with no single characters" do
+    assert RunLengthEncoder.encode("AABBBCCCC") == "2A3B4C"
   end
 
-  test "an even more complex string" do
-    assert RunLengthEncoder.encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB") === "12W1B12W3B24W1B"
+  # @tag :pending
+  test "encode single characters mixed with repeated characters" do
+    assert RunLengthEncoder.encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB") ===
+             "12WB12W3B24WB"
   end
 
-  test "it decodes an encoded simple string" do
-    assert RunLengthEncoder.decode("3A") === "AAA"
+  # @tag :pending
+  test "encode multiple whitespace mixed in string" do
+    assert RunLengthEncoder.encode("  hsqq qww  ") === "2 hs2q q2w2 "
   end
 
-  test "it decodes a more complicated string" do
-    assert RunLengthEncoder.decode("12W1B12W3B24W1B") === "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"
+  # @tag :pending
+  test "encode lowercase characters" do
+    assert RunLengthEncoder.encode("aabbbcccc") === "2a3b4c"
+  end
+
+  # @tag :pending
+  test "decode empty string" do
+    assert RunLengthEncoder.decode("") === ""
+  end
+
+  # @tag :pending
+  test "decode single characters only" do
+    assert RunLengthEncoder.decode("XYZ") === "XYZ"
+  end
+
+  # @tag :pending
+  test "decode string with no single characters" do
+    assert RunLengthEncoder.decode("2A3B4C") == "AABBBCCCC"
+  end
+
+  # @tag :pending
+  test "decode single characters with repeated characters" do
+    assert RunLengthEncoder.decode("12WB12W3B24WB") ===
+             "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"
+  end
+
+  # @tag :pending
+  test "decode multiple whitespace mixed in string" do
+    assert RunLengthEncoder.decode("2 hs2q q2w2 ") === "  hsqq qww  "
+  end
+
+  # @tag :pending
+  test "decode lower case string" do
+    assert RunLengthEncoder.decode("2a3b4c") === "aabbbcccc"
+  end
+
+  # @tag :pending
+  test "encode followed by decode gives original string" do
+    original = "zzz ZZ  zZ"
+    encoded = RunLengthEncoder.encode(original)
+    assert RunLengthEncoder.decode(encoded) === original
   end
 end
