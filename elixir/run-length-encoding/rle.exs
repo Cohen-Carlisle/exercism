@@ -1,23 +1,23 @@
 defmodule RunLengthEncoder do
   def encode(str) do
-    Regex.scan(~r/(.)\1*/, str)
-      |> Enum.reduce("", &_encode/2)
+    ~r/(.)\1*/
+    |> Regex.scan(str)
+    |> Enum.reduce("", &do_encode/2)
   end
 
   def decode(str) do
-    Regex.scan(~r/(\d+)(\D)/, str)
-     |> Enum.reduce("", &_decode/2)
+    ~r/(\d+)(\D)/
+    |> Regex.scan(str)
+    |> Enum.reduce("", &do_decode/2)
   end
 
-  defp _encode(capture, acc) do
-    [string, char] = capture
-    times = string |> String.length |> Integer.to_string
+  defp do_encode([string, char], acc) do
+    times = string |> String.length() |> Integer.to_string()
     acc <> times <> char
   end
 
-  defp _decode(capture, acc) do
-    [_, digits, char] = capture
-    times = digits |> String.to_integer
+  defp do_decode([_, digits, char], acc) do
+    times = digits |> String.to_integer()
     acc <> String.duplicate(char, times)
   end
 end
