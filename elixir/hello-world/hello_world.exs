@@ -1,4 +1,9 @@
 defmodule HelloWorld do
-  def hello, do: "Hello, World!"
-  def hello(name), do: "Hello, #{name}!"
+  @doc """
+  Simply returns "Hello, World!"
+  """
+  @spec hello :: String.t()
+  def hello do
+    "Hello, World!"
+  end
 end
