@@ -1,22 +1,30 @@
 defmodule Bob do
+  @doc """
+  Responds like a teenager.
+  """
+  @spec hey(String.t()) :: String.t()
   def hey(input) do
+    shouted = shouted?(input)
+    question = question?(input)
+
     cond do
-      input |> silence  -> "Fine. Be that way!"
-      input |> shouted  -> "Whoa, chill out!"
-      input |> question -> "Sure."
-      true              -> "Whatever."
+      shouted && question -> "Calm down, I know what I'm doing!"
+      shouted -> "Whoa, chill out!"
+      question -> "Sure."
+      silence?(input) -> "Fine. Be that way!"
+      true -> "Whatever."
     end
   end
 
-  defp silence(input) do
-    String.strip(input) == ""
+  defp shouted?(input) do
+    input =~ ~r/[[:alpha:]]/ && input == String.upcase(input)
   end
 
-  defp shouted(input) do
-    input =~ ~r/[[:alpha:]]/ && String.upcase(input) == input
-  end
-
-  defp question(input) do
+  defp question?(input) do
     String.ends_with?(input, "?")
+  end
+
+  defp silence?(input) do
+    String.trim(input) == ""
   end
 end

@@ -1,9 +1,9 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("bob.exs")
+  Code.load_file("bob.exs", __DIR__)
 end
 
-ExUnit.start
-ExUnit.configure exclude: :pending, trace: true
+ExUnit.start()
+ExUnit.configure(exclude: :pending, trace: true)
 
 defmodule BobTest do
   use ExUnit.Case
@@ -26,6 +26,10 @@ defmodule BobTest do
 
   test "talking in capitals" do
     assert Bob.hey("This Isn't Shouting!") == "Whatever."
+  end
+
+  test "asking in capitals" do
+    assert Bob.hey("THIS ISN'T SHOUTING?") == "Calm down, I know what I'm doing!"
   end
 
   test "shouting numbers" do
