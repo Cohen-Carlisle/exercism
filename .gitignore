@@ -1,2 +1,3 @@
 /ecmascript/**/node_modules/
 /ecmascript/**/package-lock.json
+/users/
