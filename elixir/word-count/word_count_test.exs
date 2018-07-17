@@ -1,23 +1,24 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("word_count.exs")
+  Code.load_file("word_count.exs", __DIR__)
 end
 
-ExUnit.start
+ExUnit.start()
+ExUnit.configure(exclude: :pending, trace: true)
 
 defmodule WordsTest do
   use ExUnit.Case
 
   test "count one word" do
-    assert Words.count("word") == %{ "word" => 1 }
+    assert Words.count("word") == %{"word" => 1}
   end
 
   test "count one of each" do
-    expected = %{ "one" => 1 ,  "of" => 1 ,  "each" => 1 }
+    expected = %{"one" => 1, "of" => 1, "each" => 1}
     assert Words.count("one of each") == expected
   end
 
   test "count multiple occurrences" do
-    expected = %{ "one" => 1 ,  "fish" => 4 ,  "two" => 1 ,  "red" => 1 ,  "blue" => 1 }
+    expected = %{"one" => 1, "fish" => 4, "two" => 1, "red" => 1, "blue" => 1}
     assert Words.count("one fish two fish red fish blue fish") == expected
   end
 
