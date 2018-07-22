@@ -6,12 +6,12 @@ defmodule Roman do
   def numerals(number), do: do_numerals(number, "")
 
   defp do_numerals(num, roman) when num >= 1000, do: do_numerals(num - 1000, roman <> "M")
-  defp do_numerals(num, roman) when num >= 500, do: do_numerals(num - 500, roman <> "D")
-  defp do_numerals(num, roman) when num >= 100, do: do_numerals(num - 100, roman <> "C")
-  defp do_numerals(num, roman) when num >= 50, do: do_numerals(num - 50, roman <> "L")
-  defp do_numerals(num, roman) when num >= 10, do: do_numerals(num - 10, roman <> "X")
-  defp do_numerals(num, roman) when num >= 5, do: do_numerals(num - 5, roman <> "V")
-  defp do_numerals(num, roman) when num >= 1, do: do_numerals(num - 1, roman <> "I")
+  defp do_numerals(num, roman) when num >= 0500, do: do_numerals(num - 0500, roman <> "D")
+  defp do_numerals(num, roman) when num >= 0100, do: do_numerals(num - 0100, roman <> "C")
+  defp do_numerals(num, roman) when num >= 0050, do: do_numerals(num - 0050, roman <> "L")
+  defp do_numerals(num, roman) when num >= 0010, do: do_numerals(num - 0010, roman <> "X")
+  defp do_numerals(num, roman) when num >= 0005, do: do_numerals(num - 0005, roman <> "V")
+  defp do_numerals(num, roman) when num >= 0001, do: do_numerals(num - 0001, roman <> "I")
   defp do_numerals(0, roman), do: to_subtractive_notation(roman)
 
   defp to_subtractive_notation(roman) do
