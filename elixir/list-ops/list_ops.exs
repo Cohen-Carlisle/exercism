@@ -9,15 +9,15 @@ defmodule ListOps do
   defp do_reverse([h | t], acc), do: do_reverse(t, [h | acc])
   defp do_reverse([], acc), do: acc
 
-  def map(list, func), do: do_map(list, func, [])
+  def map(list, func), do: do_map(list, [], func)
 
-  def do_map([], _func, acc), do: reverse(acc)
-  def do_map([h | t], func, acc), do: do_map(t, func, [func.(h) | acc])
+  def do_map([h | t], acc, func), do: do_map(t, [func.(h) | acc], func)
+  def do_map([], acc, _func), do: reverse(acc)
 
-  def filter(list, func), do: do_filter(list, func, [])
+  def filter(list, func), do: do_filter(list, [], func)
 
-  defp do_filter([h | t], func, acc), do: do_filter(t, func, func.(h) && [h | acc] || acc)
-  defp do_filter([], _func, acc), do: reverse(acc)
+  defp do_filter([h | t], acc, func), do: do_filter(t, (func.(h) && [h | acc]) || acc, func)
+  defp do_filter([], acc, _func), do: reverse(acc)
 
   def reduce([h | t], acc, func), do: reduce(t, func.(h, acc), func)
   def reduce([], acc, _func), do: acc

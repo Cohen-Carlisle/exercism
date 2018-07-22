@@ -1,9 +1,9 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("list_ops.exs")
+  Code.load_file("list_ops.exs", __DIR__)
 end
 
-ExUnit.start
-ExUnit.configure exclude: :pending, trace: true
+ExUnit.start()
+ExUnit.configure(exclude: :pending, trace: true)
 
 defmodule ListOpsTest do
   alias ListOps, as: L
@@ -17,7 +17,7 @@ defmodule ListOpsTest do
   end
 
   test "count of normal list" do
-    assert L.count([1,3,5,7]) == 4
+    assert L.count([1, 3, 5, 7]) == 4
   end
 
   test "count of huge list" do
@@ -29,7 +29,7 @@ defmodule ListOpsTest do
   end
 
   test "reverse of normal list" do
-    assert L.reverse([1,3,5,7]) == [7,5,3,1]
+    assert L.reverse([1, 3, 5, 7]) == [7, 5, 3, 1]
   end
 
   test "reverse of huge list" do
@@ -37,16 +37,15 @@ defmodule ListOpsTest do
   end
 
   test "map of empty list" do
-    assert L.map([], &(&1+1)) == []
+    assert L.map([], &(&1 + 1)) == []
   end
 
   test "map of normal list" do
-    assert L.map([1,3,5,7], &(&1+1)) == [2,4,6,8]
+    assert L.map([1, 3, 5, 7], &(&1 + 1)) == [2, 4, 6, 8]
   end
 
   test "map of huge list" do
-    assert L.map(Enum.to_list(1..1_000_000), &(&1+1)) ==
-      Enum.to_list(2..1_000_001)
+    assert L.map(Enum.to_list(1..1_000_000), &(&1 + 1)) == Enum.to_list(2..1_000_001)
   end
 
   test "filter of empty list" do
@@ -54,29 +53,28 @@ defmodule ListOpsTest do
   end
 
   test "filter of normal list" do
-    assert L.filter([1,2,3,4], &odd?/1) == [1,3]
+    assert L.filter([1, 2, 3, 4], &odd?/1) == [1, 3]
   end
 
   test "filter of huge list" do
-    assert L.filter(Enum.to_list(1..1_000_000), &odd?/1) ==
-      Enum.map(1..500_000, &(&1*2-1))
+    assert L.filter(Enum.to_list(1..1_000_000), &odd?/1) == Enum.map(1..500_000, &(&1 * 2 - 1))
   end
 
   test "reduce of empty list" do
-    assert L.reduce([], 0, &(&1+&2)) == 0
+    assert L.reduce([], 0, &(&1 + &2)) == 0
   end
 
   test "reduce of normal list" do
-    assert L.reduce([1,2,3,4], -3, &(&1+&2)) == 7
+    assert L.reduce([1, 2, 3, 4], -3, &(&1 + &2)) == 7
   end
 
   test "reduce of huge list" do
-    assert L.reduce(Enum.to_list(1..1_000_000), 0, &(&1+&2)) ==
-      Enum.reduce(1..1_000_000, 0, &(&1+&2))
+    assert L.reduce(Enum.to_list(1..1_000_000), 0, &(&1 + &2)) ==
+             Enum.reduce(1..1_000_000, 0, &(&1 + &2))
   end
 
   test "reduce with non-commutative function" do
-    assert L.reduce([1,2,3,4], 10, fn x, acc -> acc - x end) == 0
+    assert L.reduce([1, 2, 3, 4], 10, fn x, acc -> acc - x end) == 0
   end
 
   test "append of empty lists" do
@@ -84,20 +82,20 @@ defmodule ListOpsTest do
   end
 
   test "append of empty and non-empty list" do
-    assert L.append([], [1,2,3,4]) == [1,2,3,4]
+    assert L.append([], [1, 2, 3, 4]) == [1, 2, 3, 4]
   end
 
   test "append of non-empty and empty list" do
-    assert L.append([1,2,3,4], []) == [1,2,3,4]
+    assert L.append([1, 2, 3, 4], []) == [1, 2, 3, 4]
   end
 
   test "append of non-empty lists" do
-    assert L.append([1,2,3], [4,5]) == [1,2,3,4,5]
+    assert L.append([1, 2, 3], [4, 5]) == [1, 2, 3, 4, 5]
   end
 
   test "append of huge lists" do
     assert L.append(Enum.to_list(1..1_000_000), Enum.to_list(1_000_001..2_000_000)) ==
-      Enum.to_list(1..2_000_000)
+             Enum.to_list(1..2_000_000)
   end
 
   test "concat of empty list of lists" do
@@ -105,16 +103,15 @@ defmodule ListOpsTest do
   end
 
   test "concat of normal list of lists" do
-    assert L.concat([[1,2],[3],[],[4,5,6]]) == [1,2,3,4,5,6]
+    assert L.concat([[1, 2], [3], [], [4, 5, 6]]) == [1, 2, 3, 4, 5, 6]
   end
 
   test "concat of huge list of small lists" do
-    assert L.concat(Enum.map(1..1_000_000, &[&1])) ==
-      Enum.to_list(1..1_000_000)
+    assert L.concat(Enum.map(1..1_000_000, &[&1])) == Enum.to_list(1..1_000_000)
   end
 
   test "concat of small list of huge lists" do
-    assert L.concat(Enum.map(0..9, &Enum.to_list((&1*100_000+1)..((&1+1)*100_000)))) ==
-      Enum.to_list(1..1_000_000)
+    assert L.concat(Enum.map(0..9, &Enum.to_list((&1 * 100_000 + 1)..((&1 + 1) * 100_000)))) ==
+             Enum.to_list(1..1_000_000)
   end
 end
