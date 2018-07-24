@@ -1,3 +1,4 @@
 /ecmascript/**/node_modules/
 /ecmascript/**/package-lock.json
+/python/**/__pycache__/
 /users/
