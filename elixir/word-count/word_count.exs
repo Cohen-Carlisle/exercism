@@ -7,7 +7,7 @@ defmodule Words do
   end
 
   defp to_word_list(sentence) do
-    ~r/[[:alpha:]\d-]+/u
+    ~r/[[:alnum:]-]+/u
     |> Regex.scan(sentence)
     |> List.flatten()
   end
