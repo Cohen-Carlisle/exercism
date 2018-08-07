@@ -73,4 +73,18 @@ defmodule MarkdownTest do
 
     assert Markdown.parse(input) == expected
   end
+
+  @tag :pending
+  test "should not remove _ from the middle of words when processing suffix" do
+    input = "_foo_bar_"
+    expected = "<p><em>foo_bar</em></p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  @tag :pending
+  test "should not remove _ from the middle of words when processing prefix" do
+    input = "{foo_bar"
+    expected = "<p>{foo_bar</p>"
+    assert Markdown.parse(input) == expected
+  end
 end
