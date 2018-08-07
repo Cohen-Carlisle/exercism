@@ -22,7 +22,7 @@ defmodule Markdown do
 
   defp process_md_line(line) do
     cond do
-      String.starts_with?(line, "#") ->
+      header?(line) ->
         line
         |> parse_heading_level()
         |> enclose_with_heading_tag()
@@ -37,10 +37,16 @@ defmodule Markdown do
     end
   end
 
-  defp parse_heading_level(line) do
-    [heading_md | text] = String.split(line)
-    {String.length(heading_md), Enum.join(text, " ")}
-  end
+  # TODO: fix redundancy
+  defp header?(line), do: !!parse_heading_level(line)
+
+  defp parse_heading_level("# " <> text), do: {1, text}
+  defp parse_heading_level("## " <> text), do: {2, text}
+  defp parse_heading_level("### " <> text), do: {3, text}
+  defp parse_heading_level("#### " <> text), do: {4, text}
+  defp parse_heading_level("##### " <> text), do: {5, text}
+  defp parse_heading_level("###### " <> text), do: {6, text}
+  defp parse_heading_level(_), do: false
 
   defp enclose_with_list_tag(line) do
     words = line |> String.trim_leading("* ") |> String.split()

@@ -102,14 +102,14 @@ defmodule MarkdownTest do
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "does not produce invalid heading levels" do
     input = String.duplicate("#", 7) <> " h7? Madness!"
     expected = "<p>####### h7? Madness!</p>"
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "requires space between heading markdown and text" do
     input = "#hashtag"
     expected = "<p>#hashtag</p>"
