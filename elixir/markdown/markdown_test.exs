@@ -87,4 +87,18 @@ defmodule MarkdownTest do
     expected = "<p>{foo_bar</p>"
     assert Markdown.parse(input) == expected
   end
+
+  @tag :pending
+  test "should not process prefix without suffix" do
+    input = "_foo"
+    expected = "<p>_foo</p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  @tag :pending
+  test "should not process suffix without prefix" do
+    input = "foo_"
+    expected = "<p>foo_</p>"
+    assert Markdown.parse(input) == expected
+  end
 end
