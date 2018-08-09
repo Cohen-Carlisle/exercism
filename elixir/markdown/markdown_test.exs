@@ -116,7 +116,7 @@ defmodule MarkdownTest do
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "requires space between list markdown " do
     input = "*splat"
     expected = "<p>*splat</p>"

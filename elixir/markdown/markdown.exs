@@ -27,7 +27,7 @@ defmodule Markdown do
         |> parse_heading_level()
         |> enclose_with_heading_tag()
 
-      String.starts_with?(line, "*") ->
+      list?(line) ->
         enclose_with_list_tag(line)
 
       true ->
@@ -47,6 +47,8 @@ defmodule Markdown do
   defp parse_heading_level("##### " <> text), do: {5, text}
   defp parse_heading_level("###### " <> text), do: {6, text}
   defp parse_heading_level(_), do: false
+
+  defp list?(line), do: String.starts_with?(line, "* ")
 
   defp enclose_with_list_tag(line) do
     words = line |> String.trim_leading("* ") |> String.split()
