@@ -8,8 +8,8 @@ defmodule Markdown do
     iex> Markdown.parse("This is a paragraph")
     "<p>This is a paragraph</p>"
 
-    iex> Markdown.parse("#heading!\n* __Bold Item__\n* _Italic Item_")
-    "<h1>heading!</h1><ul><li><em>Bold Item</em></li><li><i>Italic Item</i></li></ul>"
+    iex> Markdown.parse("# heading!\n* __Bold Item__\n* _Italic Item_")
+    "<h1>heading!</h1><ul><li><strong>Bold Item</strong></li><li><em>Italic Item</em></li></ul>"
   """
   @spec parse(String.t()) :: String.t()
   def parse(markdown) do
