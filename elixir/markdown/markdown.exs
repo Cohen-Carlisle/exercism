@@ -22,18 +22,9 @@ defmodule Markdown do
 
   defp process_md_line(line) do
     cond do
-      header?(line) ->
-        line
-        |> parse_heading_level()
-        |> enclose_with_heading_tag()
-
-      list?(line) ->
-        enclose_with_list_tag(line)
-
-      true ->
-        line
-        |> String.split()
-        |> enclose_with_paragraph_tag()
+      header?(line) -> enclose_in_html_tag(line, :h)
+      list?(line) -> enclose_in_html_tag(line, :li)
+      true -> enclose_in_html_tag(line, :p)
     end
   end
 
@@ -50,21 +41,24 @@ defmodule Markdown do
 
   defp list?(line), do: String.starts_with?(line, "* ")
 
-  defp enclose_with_list_tag(line) do
-    words = line |> String.trim_leading("* ") |> String.split()
-    "<li>" <> process_md_words(words) <> "</li>"
+  # TODO: process_md_words/1
+  defp enclose_in_html_tag(line, :h) do
+    {heading_level, text} = parse_heading_level(line)
+    "<h#{heading_level}>" <> text <> "</h#{heading_level}>"
   end
 
-  defp enclose_with_heading_tag({heading_level, heading_text}) do
-    "<h#{heading_level}>" <> heading_text <> "</h#{heading_level}>"
+  defp enclose_in_html_tag(line, :li) do
+    text = line |> String.trim_leading("* ")
+    "<li>" <> process_md_words(text) <> "</li>"
   end
 
-  defp enclose_with_paragraph_tag(words) do
-    "<p>#{process_md_words(words)}</p>"
+  defp enclose_in_html_tag(line, tag) do
+    "<#{tag}>" <> process_md_words(line) <> "</#{tag}>"
   end
 
-  defp process_md_words(words) do
-    words
+  defp process_md_words(text) do
+    text
+    |> String.split()
     |> Enum.map(&replace_md_with_html/1)
     |> Enum.join(" ")
   end
