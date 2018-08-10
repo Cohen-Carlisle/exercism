@@ -122,4 +122,11 @@ defmodule MarkdownTest do
     expected = "<p>*splat</p>"
     assert Markdown.parse(input) == expected
   end
+
+  @tag :pending
+  test "heading should be able to be styled further" do
+    input = "# __Bold Header__"
+    expected = "<h1><strong>Bold Header</strong></h1>"
+    assert Markdown.parse(input) == expected
+  end
 end
