@@ -16,7 +16,7 @@ defmodule Markdown do
     |> String.split("\n")
     |> Enum.map(&process_md_line/1)
     |> Enum.join()
-    |> patch_html()
+    |> nest_li_in_ul()
   end
 
   defp process_md_line(line) do
@@ -59,9 +59,9 @@ defmodule Markdown do
     |> String.replace(~r/_(.+?)_/, "<em>\\1</em>")
   end
 
-  defp patch_html(html) do
+  defp nest_li_in_ul(html) do
     html
-    |> String.replace("<li>", "<ul><li>", global: false)
-    |> String.replace_suffix("</li>", "</li></ul>")
+    |> String.replace(~r{(?<!</li>)<li>}, "<ul><li>")
+    |> String.replace(~r{</li>(?!<li>)}, "</li></ul>")
   end
 end

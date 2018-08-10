@@ -137,14 +137,14 @@ defmodule MarkdownTest do
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "should handle multiple lists" do
     input = "# 1\n* a\n* b\n# 2\n* c\n* d"
     expected = "<h1>1</h1><ul><li>a</li><li>b</li></ul><h1>2</h1><ul><li>c</li><li>d</li></ul>"
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "terminates non-terminal lists" do
     input = "* 1\n* 2\n# Fin"
     expected = "<ul><li>1</li><li>2</li></ul><h1>Fin</h1>"
