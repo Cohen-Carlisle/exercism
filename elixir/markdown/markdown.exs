@@ -21,13 +21,12 @@ defmodule Markdown do
 
   defp process_md_line(line) do
     cond do
-      header?(line) -> enclose_in_html_tag(line, :h)
-      list?(line) -> enclose_in_html_tag(line, :li)
-      true -> enclose_in_html_tag(line, :p)
+      header?(line) -> process_line_as(line, :h)
+      list?(line) -> process_line_as(line, :li)
+      true -> process_line_as(line, :p)
     end
   end
 
-  # TODO: fix redundancy
   defp header?(line), do: !!parse_heading_level(line)
 
   defp parse_heading_level("# " <> text), do: {1, text}
@@ -40,21 +39,21 @@ defmodule Markdown do
 
   defp list?(line), do: String.starts_with?(line, "* ")
 
-  defp enclose_in_html_tag(line, :h) do
+  defp process_line_as(line, :h) do
     {heading_level, text} = parse_heading_level(line)
-    "<h#{heading_level}>" <> process_md_text(text) <> "</h#{heading_level}>"
+    "<h#{heading_level}>" <> process_inner_text(text) <> "</h#{heading_level}>"
   end
 
-  defp enclose_in_html_tag(line, :li) do
+  defp process_line_as(line, :li) do
     text = line |> String.trim_leading("* ")
-    "<li>" <> process_md_text(text) <> "</li>"
+    "<li>" <> process_inner_text(text) <> "</li>"
   end
 
-  defp enclose_in_html_tag(line, tag) do
-    "<#{tag}>" <> process_md_text(line) <> "</#{tag}>"
+  defp process_line_as(line, :p) do
+    "<p>" <> process_inner_text(line) <> "</p>"
   end
 
-  defp process_md_text(text) do
+  defp process_inner_text(text) do
     text
     |> String.replace(~r/__(.+?)__/, "<strong>\\1</strong>")
     |> String.replace(~r/_(.+?)_/, "<em>\\1</em>")
