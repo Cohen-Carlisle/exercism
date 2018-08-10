@@ -41,10 +41,9 @@ defmodule Markdown do
 
   defp list?(line), do: String.starts_with?(line, "* ")
 
-  # TODO: process_md_words/1
   defp enclose_in_html_tag(line, :h) do
     {heading_level, text} = parse_heading_level(line)
-    "<h#{heading_level}>" <> text <> "</h#{heading_level}>"
+    "<h#{heading_level}>" <> process_md_words(text) <> "</h#{heading_level}>"
   end
 
   defp enclose_in_html_tag(line, :li) do
