@@ -15,8 +15,8 @@ defmodule Markdown do
     markdown
     |> String.split("\n")
     |> Enum.map(&process_md_line/1)
+    |> nest_li_in_ul
     |> Enum.join()
-    |> nest_li_in_ul()
   end
 
   defp process_md_line(line) do
@@ -59,9 +59,12 @@ defmodule Markdown do
     |> String.replace(~r/_(.+?)_/, "<em>\\1</em>")
   end
 
-  defp nest_li_in_ul(html) do
-    html
-    |> String.replace(~r{(?<!</li>)<li>}, "<ul><li>")
-    |> String.replace(~r{</li>(?!<li>)}, "</li></ul>")
+  defp nest_li_in_ul(html_lines) do
+    html_lines
+    |> Enum.chunk_by(&String.starts_with?(&1, "<li>"))
+    |> Enum.flat_map(fn
+      ["<li>" <> _ | _] = lines -> ["<ul>" | lines] ++ ["</ul>"]
+      lines -> lines
+    end)
   end
 end
