@@ -75,27 +75,20 @@ defmodule MarkdownTest do
   end
 
   # @tag :pending
-  test "should not remove _ from the middle of words when processing suffix" do
-    input = "_foo_bar_"
-    expected = "<p><em>foo_bar</em></p>"
-    assert Markdown.parse(input) == expected
-  end
-
-  # @tag :pending
   test "should not remove _ from the middle of words when processing prefix" do
     input = "{foo_bar"
     expected = "<p>{foo_bar</p>"
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "should not process prefix without suffix" do
     input = "_foo"
     expected = "<p>_foo</p>"
     assert Markdown.parse(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "should not process suffix without prefix" do
     input = "foo_"
     expected = "<p>foo_</p>"
@@ -127,6 +120,20 @@ defmodule MarkdownTest do
   test "heading should be able to be styled further" do
     input = "# __Bold Header__"
     expected = "<h1><strong>Bold Header</strong></h1>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should style in a non-greedy fashion with italics" do
+    input = "_foo_bar_"
+    expected = "<p><em>foo</em>bar_</p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should style in a non-greedy fashion with bold" do
+    input = "__foo__bar__"
+    expected = "<p><strong>foo</strong>bar__</p>"
     assert Markdown.parse(input) == expected
   end
 end

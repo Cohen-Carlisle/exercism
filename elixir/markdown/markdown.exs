@@ -42,45 +42,22 @@ defmodule Markdown do
 
   defp enclose_in_html_tag(line, :h) do
     {heading_level, text} = parse_heading_level(line)
-    "<h#{heading_level}>" <> process_md_words(text) <> "</h#{heading_level}>"
+    "<h#{heading_level}>" <> process_md_text(text) <> "</h#{heading_level}>"
   end
 
   defp enclose_in_html_tag(line, :li) do
     text = line |> String.trim_leading("* ")
-    "<li>" <> process_md_words(text) <> "</li>"
+    "<li>" <> process_md_text(text) <> "</li>"
   end
 
   defp enclose_in_html_tag(line, tag) do
-    "<#{tag}>" <> process_md_words(line) <> "</#{tag}>"
+    "<#{tag}>" <> process_md_text(line) <> "</#{tag}>"
   end
 
-  defp process_md_words(text) do
+  defp process_md_text(text) do
     text
-    |> String.split()
-    |> Enum.map(&replace_md_with_html/1)
-    |> Enum.join(" ")
-  end
-
-  defp replace_md_with_html(word) do
-    word
-    |> replace_md_prefix()
-    |> replace_md_suffix()
-  end
-
-  defp replace_md_prefix(word) do
-    cond do
-      String.starts_with?(word, "__") -> String.replace_prefix(word, "__", "<strong>")
-      String.starts_with?(word, "_") -> String.replace_prefix(word, "_", "<em>")
-      true -> word
-    end
-  end
-
-  defp replace_md_suffix(word) do
-    cond do
-      String.ends_with?(word, "__") -> String.replace_suffix(word, "__", "</strong>")
-      String.ends_with?(word, "_") -> String.replace_suffix(word, "_", "</em>")
-      true -> word
-    end
+    |> String.replace(~r/__(.+?)__/, "<strong>\\1</strong>")
+    |> String.replace(~r/_(.+?)_/, "<em>\\1</em>")
   end
 
   defp patch_html(html) do
