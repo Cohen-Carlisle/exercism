@@ -1,4 +1,3 @@
-# TODO: fix doctest
 defmodule Markdown do
   @doc """
     Parses a given string with Markdown syntax and returns the associated HTML for that string.
