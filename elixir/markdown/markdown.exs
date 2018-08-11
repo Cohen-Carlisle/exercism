@@ -14,49 +14,35 @@ defmodule Markdown do
   def parse(markdown) do
     markdown
     |> String.split("\n")
-    |> Enum.map(&process_md_line/1)
-    |> nest_li_in_ul
+    |> Enum.map(&md_line_to_html/1)
+    |> nest_li_in_ul()
     |> Enum.join()
   end
 
-  defp process_md_line(line) do
-    cond do
-      header?(line) -> process_line_as(line, :h)
-      list?(line) -> process_line_as(line, :li)
-      true -> process_line_as(line, :p)
-    end
+  defp md_line_to_html(line) do
+    line
+    |> outer_html_tag_and_md_text()
+    |> enclose_text_in_tag()
+    |> process_inner_md_text()
   end
 
-  defp header?(line), do: !!parse_heading_level(line)
+  defp outer_html_tag_and_md_text("* " <> md_text), do: {:li, md_text}
+  defp outer_html_tag_and_md_text("# " <> md_text), do: {:h1, md_text}
+  defp outer_html_tag_and_md_text("## " <> md_text), do: {:h2, md_text}
+  defp outer_html_tag_and_md_text("### " <> md_text), do: {:h3, md_text}
+  defp outer_html_tag_and_md_text("#### " <> md_text), do: {:h4, md_text}
+  defp outer_html_tag_and_md_text("##### " <> md_text), do: {:h5, md_text}
+  defp outer_html_tag_and_md_text("###### " <> md_text), do: {:h6, md_text}
+  defp outer_html_tag_and_md_text(md_text), do: {:p, md_text}
 
-  defp parse_heading_level("# " <> text), do: {1, text}
-  defp parse_heading_level("## " <> text), do: {2, text}
-  defp parse_heading_level("### " <> text), do: {3, text}
-  defp parse_heading_level("#### " <> text), do: {4, text}
-  defp parse_heading_level("##### " <> text), do: {5, text}
-  defp parse_heading_level("###### " <> text), do: {6, text}
-  defp parse_heading_level(_), do: false
+  defp enclose_text_in_tag({tag, text}), do: {"<#{tag}>", text, "</#{tag}>"}
 
-  defp list?(line), do: String.starts_with?(line, "* ")
-
-  defp process_line_as(line, :h) do
-    {heading_level, text} = parse_heading_level(line)
-    "<h#{heading_level}>" <> process_inner_text(text) <> "</h#{heading_level}>"
-  end
-
-  defp process_line_as(line, :li) do
-    text = line |> String.trim_leading("* ")
-    "<li>" <> process_inner_text(text) <> "</li>"
-  end
-
-  defp process_line_as(line, :p) do
-    "<p>" <> process_inner_text(line) <> "</p>"
-  end
-
-  defp process_inner_text(text) do
-    text
+  defp process_inner_md_text({outer_open_tag, inner_md_text, outer_close_tag}) do
+    inner_md_text
     |> String.replace(~r/__(.+?)__/, "<strong>\\1</strong>")
     |> String.replace(~r/_(.+?)_/, "<em>\\1</em>")
+    |> String.replace_prefix("", outer_open_tag)
+    |> String.replace_suffix("", outer_close_tag)
   end
 
   defp nest_li_in_ul(html_lines) do
