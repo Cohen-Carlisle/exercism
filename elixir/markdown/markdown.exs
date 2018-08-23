@@ -26,14 +26,18 @@ defmodule Markdown do
     |> process_inner_md_text()
   end
 
-  defp outer_html_tag_and_md_text("* " <> md_text), do: {:li, md_text}
-  defp outer_html_tag_and_md_text("# " <> md_text), do: {:h1, md_text}
-  defp outer_html_tag_and_md_text("## " <> md_text), do: {:h2, md_text}
-  defp outer_html_tag_and_md_text("### " <> md_text), do: {:h3, md_text}
-  defp outer_html_tag_and_md_text("#### " <> md_text), do: {:h4, md_text}
-  defp outer_html_tag_and_md_text("##### " <> md_text), do: {:h5, md_text}
-  defp outer_html_tag_and_md_text("###### " <> md_text), do: {:h6, md_text}
-  defp outer_html_tag_and_md_text(md_text), do: {:p, md_text}
+  defp outer_html_tag_and_md_text(line) do
+    case line do
+      "* " <> md_text -> {:li, md_text}
+      "# " <> md_text -> {:h1, md_text}
+      "## " <> md_text -> {:h2, md_text}
+      "### " <> md_text -> {:h3, md_text}
+      "#### " <> md_text -> {:h4, md_text}
+      "##### " <> md_text -> {:h5, md_text}
+      "###### " <> md_text -> {:h6, md_text}
+      md_text -> {:p, md_text}
+    end
+  end
 
   defp enclose_text_in_tag({tag, text}), do: {"<#{tag}>", text, "</#{tag}>"}
 
