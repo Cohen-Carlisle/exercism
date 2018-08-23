@@ -82,16 +82,30 @@ defmodule MarkdownTest do
   end
 
   # @tag :pending
-  test "should not process prefix without suffix" do
+  test "should not process <em> without </em>" do
     input = "_foo"
     expected = "<p>_foo</p>"
     assert Markdown.parse(input) == expected
   end
 
   # @tag :pending
-  test "should not process suffix without prefix" do
+  test "should not process <strong> without </strong>" do
+    input = "__foo"
+    expected = "<p>__foo</p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should not process </em> without <em>" do
     input = "foo_"
     expected = "<p>foo_</p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should not process </strong> without <strong>" do
+    input = "foo__"
+    expected = "<p>foo__</p>"
     assert Markdown.parse(input) == expected
   end
 
@@ -124,16 +138,30 @@ defmodule MarkdownTest do
   end
 
   # @tag :pending
-  test "should style in a non-greedy fashion with italics" do
-    input = "_foo_bar_"
-    expected = "<p><em>foo</em>bar_</p>"
+  test "should style in a non-greedy fashion with <em>" do
+    input = "_foo_ and _bar_"
+    expected = "<p><em>foo</em> and <em>bar</em></p>"
     assert Markdown.parse(input) == expected
   end
 
   # @tag :pending
-  test "should style in a non-greedy fashion with bold" do
-    input = "__foo__bar__"
-    expected = "<p><strong>foo</strong>bar__</p>"
+  test "should style in a non-greedy fashion with <strong>" do
+    input = "__foo__ and __bar__"
+    expected = "<p><strong>foo</strong> and <strong>bar</strong></p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should style subwords with <em>" do
+    input = "_foo_bar"
+    expected = "<p><em>foo</em>bar</p>"
+    assert Markdown.parse(input) == expected
+  end
+
+  # @tag :pending
+  test "should style subwords with <strong>" do
+    input = "__foo__bar"
+    expected = "<p><strong>foo</strong>bar</p>"
     assert Markdown.parse(input) == expected
   end
 
