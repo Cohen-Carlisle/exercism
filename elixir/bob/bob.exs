@@ -8,7 +8,7 @@ defmodule Bob do
     question = question?(input)
 
     cond do
-      shouted && question -> "Calm down, I know what I'm doing!"
+      shouted and question -> "Calm down, I know what I'm doing!"
       shouted -> "Whoa, chill out!"
       question -> "Sure."
       silence?(input) -> "Fine. Be that way!"
@@ -17,7 +17,7 @@ defmodule Bob do
   end
 
   defp shouted?(input) do
-    input =~ ~r/[[:alpha:]]/ && input == String.upcase(input)
+    not Regex.match?(~r/[[:lower:]]/, input) and Regex.match?(~r/[[:upper:]]/, input)
   end
 
   defp question?(input) do
