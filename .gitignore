@@ -2,3 +2,4 @@
 /ecmascript/**/package-lock.json
 /python/**/__pycache__/
 /users/
+/elm/**/elm-stuff/
