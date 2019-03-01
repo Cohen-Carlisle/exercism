@@ -22,8 +22,10 @@ defmodule ListOps do
   def reduce([h | t], acc, func), do: reduce(t, func.(h, acc), func)
   def reduce([], acc, _func), do: acc
 
-  def append([h | t], list), do: [h | append(t, list)]
-  def append([], list), do: list
+  def append(list1, list2), do: list1 |> reverse() |> do_append(list2)
 
-  def concat(list), do: list |> reverse |> reduce([], &append/2)
+  defp do_append([h | t], list), do: do_append(t, [h | list])
+  defp do_append([], list), do: list
+
+  def concat(list), do: list |> reverse() |> reduce([], &append/2)
 end
