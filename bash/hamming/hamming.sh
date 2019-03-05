@@ -3,26 +3,28 @@
 set -o errexit
 set -o nounset
 
-main() {
+validate_arg_count() {
   if [[ $# -ne 2 ]]; then
     echo "Usage: hamming.sh <string1> <string2>"
     exit 1
   fi
+}
 
-  local string1=$1
-  local string2=$2
-
-  if [[ ${#string1} -ne ${#string2} ]]; then
+validate_strands_equal_length() {
+  if [[ ${#1} -ne ${#2} ]]; then
     echo "left and right strands must be of equal length"
     exit 1
   fi
+}
 
+calculate_hamming_distance() {
   local dist=0
-  for (( i = 0; i < ${#string1}; i++ )); do
-    [[ ${string1:$i:1} != ${string2:$i:1} ]] && (( ++dist ))
+  for (( i = 0; i < ${#1}; i++ )); do
+    [[ ${1:$i:1} != ${2:$i:1} ]] && (( ++dist ))
   done
-
   echo $dist
 }
 
-main "$@"
+validate_arg_count "$@"
+validate_strands_equal_length "$1" "$2"
+calculate_hamming_distance "$1" "$2"
