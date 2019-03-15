@@ -10,7 +10,7 @@ defmodule Say do
   def in_english(_), do: {:error, "number is out of range"}
 
   defp do_in_english(englist, n, thousand_power \\ 3)
-  defp do_in_english(englist, _, -1), do: englist |> Enum.reverse() |> Enum.join(" ")
+  defp do_in_english(englist, 0, _), do: englist |> Enum.reverse() |> Enum.join(" ")
 
   defp do_in_english(englist, n, thousand_power) do
     thousand_power_multiple = div(n, int_pow(1000, thousand_power))
