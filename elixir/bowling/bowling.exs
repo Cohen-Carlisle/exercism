@@ -15,12 +15,12 @@ defmodule Bowling do
     case it returns a helpful message.
   """
   @spec roll(t(), integer()) :: t() | {:error, String.t()}
-  def roll(%Bowling{frames: [[last_roll] | t]} = game, roll) do
-    put_in(game.frames, [[last_roll, roll] | t])
+  def roll(%Bowling{frames: [[last_roll] | t]}, roll) when last_roll < 10 do
+    %Bowling{frames: [[last_roll, roll] | t]}
   end
 
-  def roll(%Bowling{frames: frames} = game, roll) do
-    put_in(game.frames, [[roll] | frames])
+  def roll(%Bowling{frames: frames}, roll) do
+    %Bowling{frames: [[roll] | frames]}
   end
 
   @doc """
@@ -31,6 +31,25 @@ defmodule Bowling do
   def score(%Bowling{} = game) do
     game.frames
     |> Enum.reverse()
-    |> Enum.reduce(0, fn frame, acc -> acc + Enum.sum(frame) end)
+    |> Enum.reduce({0, first_roll: 1, second_roll: 1}, fn
+      [10], {score, multipliers} ->
+        {
+          score + 10 * multipliers[:first_roll],
+          first_roll: multipliers[:second_roll] + 1, second_roll: 2
+        }
+
+      [x, y], {score, multipliers} when x + y == 10 ->
+        {
+          score + x * multipliers[:first_roll] + y * multipliers[:second_roll],
+          first_roll: 2, second_roll: 1
+        }
+
+      [x, y], {score, multipliers} ->
+        {
+          score + x * multipliers[:first_roll] + y * multipliers[:second_roll],
+          first_roll: 1, second_roll: 1
+        }
+    end)
+    |> elem(0)
   end
 end
