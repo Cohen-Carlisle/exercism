@@ -15,6 +15,23 @@ defmodule Bowling do
     case it returns a helpful message.
   """
   @spec roll(t(), integer()) :: t() | {:error, String.t()}
+  def roll(%Bowling{}, roll) when not is_integer(roll) do
+    {:error, "Roll must be an integer"}
+  end
+
+  def roll(%Bowling{}, roll) when roll < 0 do
+    {:error, "Negative roll is invalid"}
+  end
+
+  def roll(%Bowling{}, roll) when roll > 10 do
+    {:error, "Pin count exceeds pins on the lane"}
+  end
+
+  def roll(%Bowling{frames: [[last_roll] | _]}, roll)
+      when last_roll < 10 and last_roll + roll > 10 do
+    {:error, "Pin count exceeds pins on the lane"}
+  end
+
   def roll(%Bowling{frames: [[last_roll] | t]}, roll) when last_roll < 10 do
     %Bowling{frames: [[last_roll, roll] | t]}
   end
@@ -38,15 +55,15 @@ defmodule Bowling do
           first_roll: multipliers[:second_roll] + 1, second_roll: 2
         }
 
-      [x, y], {score, multipliers} when x + y == 10 ->
+      [roll1, roll2], {score, multipliers} when roll1 + roll2 == 10 ->
         {
-          score + x * multipliers[:first_roll] + y * multipliers[:second_roll],
+          score + roll1 * multipliers[:first_roll] + roll2 * multipliers[:second_roll],
           first_roll: 2, second_roll: 1
         }
 
-      [x, y], {score, multipliers} ->
+      [roll1, roll2], {score, multipliers} ->
         {
-          score + x * multipliers[:first_roll] + y * multipliers[:second_roll],
+          score + roll1 * multipliers[:first_roll] + roll2 * multipliers[:second_roll],
           first_roll: 1, second_roll: 1
         }
     end)
