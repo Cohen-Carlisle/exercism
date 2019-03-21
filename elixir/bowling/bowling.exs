@@ -7,7 +7,9 @@ defmodule Bowling do
     the game
   """
   @spec start() :: t()
-  def start, do: %Bowling{}
+  def start do
+    %Bowling{}
+  end
 
   @doc """
     Records the number of pins knocked down on a single roll. Returns `any`
@@ -27,17 +29,56 @@ defmodule Bowling do
     {:error, "Pin count exceeds pins on the lane"}
   end
 
-  def roll(%Bowling{frames: [[last_roll] | _]}, roll)
-      when last_roll < 10 and last_roll + roll > 10 do
+  def roll(%Bowling{frames: frames}, roll) do
+    do_roll(frames, length(frames), roll)
+  end
+
+  defp do_roll(frames, frame_count, roll) when frame_count < 10 do
+    do_normal_frame_rules(frames, roll)
+  end
+
+  defp do_roll(frames, 10, roll) do
+    do_last_frame_rules(frames, roll)
+  end
+
+  defp do_normal_frame_rules([[last_roll] | t], roll) when last_roll < 10 do
+    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[last_roll, roll] | t]}
+  end
+
+  defp do_normal_frame_rules(frames, roll) do
+    %Bowling{frames: [[roll] | frames]}
+  end
+
+  defp do_last_frame_rules([[10] | t], roll) do
+    %Bowling{frames: [[10, roll] | t]}
+  end
+
+  defp do_last_frame_rules([[last_roll] | t], roll) do
+    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[last_roll, roll] | t]}
+  end
+
+  defp do_last_frame_rules([[10, 10] | t], roll) do
+    %Bowling{frames: [[10, 10, roll] | t]}
+  end
+
+  defp do_last_frame_rules([[10, last_roll] | t], roll) do
+    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[10, last_roll, roll] | t]}
+  end
+
+  defp do_last_frame_rules([[roll1, roll2] | t], roll) when roll1 + roll2 == 10 do
+    %Bowling{frames: [[roll1, roll2, roll] | t]}
+  end
+
+  defp do_last_frame_rules(_frames, _roll) do
+    {:error, "Cannot roll after game is over"}
+  end
+
+  defp maybe_pin_count_error(roll1, roll2) when roll1 + roll2 > 10 do
     {:error, "Pin count exceeds pins on the lane"}
   end
 
-  def roll(%Bowling{frames: [[last_roll] | t]}, roll) when last_roll < 10 do
-    %Bowling{frames: [[last_roll, roll] | t]}
-  end
-
-  def roll(%Bowling{frames: frames}, roll) do
-    %Bowling{frames: [[roll] | frames]}
+  defp maybe_pin_count_error(_roll1, _roll2) do
+    nil
   end
 
   @doc """
@@ -48,6 +89,7 @@ defmodule Bowling do
   def score(%Bowling{} = game) do
     game.frames
     |> Enum.reverse()
+    |> List.flatten()
     |> Enum.reduce({0, first_roll: 1, second_roll: 1}, fn
       [10], {score, multipliers} ->
         {
