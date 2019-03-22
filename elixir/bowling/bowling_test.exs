@@ -83,7 +83,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 81
   end
 
-  @tag :pending
+  # @tag :pending
   test "a strike in the last frame gets a two roll bonus that is counted once" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 1]
@@ -91,7 +91,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 18
   end
 
-  @tag :pending
+  # @tag :pending
   test "rolling a spare with the two roll bonus does not get a bonus roll" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 3]
@@ -99,7 +99,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 20
   end
 
-  @tag :pending
+  # @tag :pending
   test "strikes with the two roll bonus do not get bonus rolls" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10]
@@ -107,7 +107,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 30
   end
 
-  @tag :pending
+  # @tag :pending
   test "a strike with the one roll bonus after a spare in the last frame does not get a bonus" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 10]
@@ -115,7 +115,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 20
   end
 
-  @tag :pending
+  # @tag :pending
   test "all strikes is a perfect game" do
     game = Bowling.start()
     rolls = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
@@ -158,7 +158,7 @@ defmodule BowlingTest do
     assert Bowling.roll(game, 6) == {:error, "Pin count exceeds pins on the lane"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "two bonus rolls after a strike in the last frame can score more than 10 points if one is a strike" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 6]

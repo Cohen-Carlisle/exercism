@@ -41,44 +41,60 @@ defmodule Bowling do
     do_last_frame_rules(frames, roll)
   end
 
-  defp do_normal_frame_rules([[last_roll] | t], roll) when last_roll < 10 do
-    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[last_roll, roll] | t]}
+  defp do_normal_frame_rules([[last_roll] | _] = frames, roll) when last_roll < 10 do
+    do_spare_try(frames, roll)
+  end
+
+  defp do_normal_frame_rules(frames, 10) do
+    %Bowling{frames: [["X"] | frames]}
   end
 
   defp do_normal_frame_rules(frames, roll) do
     %Bowling{frames: [[roll] | frames]}
   end
 
-  defp do_last_frame_rules([[10] | t], roll) do
-    %Bowling{frames: [[10, roll] | t]}
+  defp do_last_frame_rules([["X"] | t], 10) do
+    %Bowling{frames: [["X", "X"] | t]}
   end
 
-  defp do_last_frame_rules([[last_roll] | t], roll) do
-    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[last_roll, roll] | t]}
+  defp do_last_frame_rules([["X"] | t], roll) do
+    %Bowling{frames: [["X", roll] | t]}
   end
 
-  defp do_last_frame_rules([[10, 10] | t], roll) do
-    %Bowling{frames: [[10, 10, roll] | t]}
+  defp do_last_frame_rules([[_last_roll] | _t] = frames, roll) do
+    do_spare_try(frames, roll)
   end
 
-  defp do_last_frame_rules([[10, last_roll] | t], roll) do
-    maybe_pin_count_error(last_roll, roll) || %Bowling{frames: [[10, last_roll, roll] | t]}
+  defp do_last_frame_rules([["X", "X"] | t], 10) do
+    %Bowling{frames: [["X", "X", "X"] | t]}
   end
 
-  defp do_last_frame_rules([[roll1, roll2] | t], roll) when roll1 + roll2 == 10 do
-    %Bowling{frames: [[roll1, roll2, roll] | t]}
+  defp do_last_frame_rules([["X", "X"] | t], roll) do
+    %Bowling{frames: [["X", "X", roll] | t]}
+  end
+
+  defp do_last_frame_rules([["X", _last_roll] | _t] = frames, roll) do
+    do_spare_try(frames, roll)
+  end
+
+  defp do_last_frame_rules([[roll1, "/"] | t], 10) do
+    %Bowling{frames: [[roll1, "/", "X"] | t]}
+  end
+
+  defp do_last_frame_rules([[roll1, "/"] | t], roll) do
+    %Bowling{frames: [[roll1, "/", roll] | t]}
   end
 
   defp do_last_frame_rules(_frames, _roll) do
     {:error, "Cannot roll after game is over"}
   end
 
-  defp maybe_pin_count_error(roll1, roll2) when roll1 + roll2 > 10 do
-    {:error, "Pin count exceeds pins on the lane"}
-  end
-
-  defp maybe_pin_count_error(_roll1, _roll2) do
-    nil
+  defp do_spare_try([h | t], roll) do
+    case List.last(h) + roll do
+      sum when sum > 10 -> {:error, "Pin count exceeds pins on the lane"}
+      10 -> %Bowling{frames: [h ++ ["/"] | t]}
+      _ -> %Bowling{frames: [h ++ [roll] | t]}
+    end
   end
 
   @doc """
@@ -86,29 +102,83 @@ defmodule Bowling do
     If the game isn't complete, it returns a helpful message.
   """
   @spec score(t()) :: integer | {:error, String.t()}
-  def score(%Bowling{} = game) do
-    game.frames
+  def score(%Bowling{frames: [last_frame | _t] = frames}) do
+    frames
     |> Enum.reverse()
     |> List.flatten()
-    |> Enum.reduce({0, first_roll: 1, second_roll: 1}, fn
-      [10], {score, multipliers} ->
-        {
-          score + 10 * multipliers[:first_roll],
-          first_roll: multipliers[:second_roll] + 1, second_roll: 2
-        }
+    |> score_normal_frames(length(last_frame), 0)
+    |> add_last_frame_score(last_frame)
+  end
 
-      [roll1, roll2], {score, multipliers} when roll1 + roll2 == 10 ->
-        {
-          score + roll1 * multipliers[:first_roll] + roll2 * multipliers[:second_roll],
-          first_roll: 2, second_roll: 1
-        }
+  defp score_normal_frames([_1, _2, _3], 3, score) do
+    score
+  end
 
-      [roll1, roll2], {score, multipliers} ->
-        {
-          score + roll1 * multipliers[:first_roll] + roll2 * multipliers[:second_roll],
-          first_roll: 1, second_roll: 1
-        }
-    end)
-    |> elem(0)
+  defp score_normal_frames([_1, _2], 2, score) do
+    score
+  end
+
+  defp score_normal_frames(["X" | t], last_frame_length, score) do
+    new_score = score + 10 + strike_bonus(t)
+    score_normal_frames(t, last_frame_length, new_score)
+  end
+
+  defp score_normal_frames([roll1, "/" | t], last_frame_length, score) do
+    roll2 = 10 - roll1
+    new_score = score + roll1 + roll2 + spare_bonus(t)
+    score_normal_frames(t, last_frame_length, new_score)
+  end
+
+  defp score_normal_frames([roll | t], last_frame_length, score) do
+    new_score = score + roll
+    score_normal_frames(t, last_frame_length, new_score)
+  end
+
+  defp add_last_frame_score(score, ["X" | t]) do
+    score + 10 + strike_bonus(t)
+  end
+
+  defp add_last_frame_score(score, [_roll1, "/" | t]) do
+    score + 10 + spare_bonus(t)
+  end
+
+  defp add_last_frame_score(score, frame) do
+    score + Enum.sum(frame)
+  end
+
+  defp strike_bonus([roll1, roll2 | _]) do
+    do_bonus(roll1, roll2)
+  end
+
+  defp strike_bonus([roll]) do
+    do_bonus(roll)
+  end
+
+  defp strike_bonus([]) do
+    0
+  end
+
+  defp spare_bonus([roll | _]) do
+    do_bonus(roll)
+  end
+
+  defp spare_bonus([]) do
+    0
+  end
+
+  defp do_bonus(_roll1, "/") do
+    10
+  end
+
+  defp do_bonus(roll1, roll2) do
+    do_bonus(roll1) + do_bonus(roll2)
+  end
+
+  defp do_bonus("X") do
+    10
+  end
+
+  defp do_bonus(roll) do
+    roll
   end
 end
