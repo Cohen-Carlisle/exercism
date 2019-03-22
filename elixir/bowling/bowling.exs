@@ -41,7 +41,7 @@ defmodule Bowling do
     do_last_frame_rules(frames, roll)
   end
 
-  defp do_normal_frame_rules([[last_roll] | _] = frames, roll) when last_roll < 10 do
+  defp do_normal_frame_rules([[last_roll] | _t] = frames, roll) when last_roll < 10 do
     do_spare_try(frames, roll)
   end
 
@@ -93,7 +93,7 @@ defmodule Bowling do
     case List.last(h) + roll do
       sum when sum > 10 -> {:error, "Pin count exceeds pins on the lane"}
       10 -> %Bowling{frames: [h ++ ["/"] | t]}
-      _ -> %Bowling{frames: [h ++ [roll] | t]}
+      _else -> %Bowling{frames: [h ++ [roll] | t]}
     end
   end
 
@@ -113,7 +113,7 @@ defmodule Bowling do
         |> score_normal_frames(length(last_frame), 0)
         |> add_last_frame_score(last_frame)
 
-      _ ->
+      _else ->
         {:error, "Score cannot be taken until the end of the game"}
     end
   end
@@ -154,24 +154,12 @@ defmodule Bowling do
     score + Enum.sum(frame)
   end
 
-  defp strike_bonus([roll1, roll2 | _]) do
+  defp strike_bonus([roll1, roll2 | _t]) do
     do_bonus(roll1, roll2)
   end
 
-  defp strike_bonus([roll]) do
+  defp spare_bonus([roll | _t]) do
     do_bonus(roll)
-  end
-
-  defp strike_bonus([]) do
-    0
-  end
-
-  defp spare_bonus([roll | _]) do
-    do_bonus(roll)
-  end
-
-  defp spare_bonus([]) do
-    0
   end
 
   defp do_bonus(_roll1, "/") do
