@@ -102,12 +102,20 @@ defmodule Bowling do
     If the game isn't complete, it returns a helpful message.
   """
   @spec score(t()) :: integer | {:error, String.t()}
-  def score(%Bowling{frames: [last_frame | _t] = frames}) do
-    frames
-    |> Enum.reverse()
-    |> List.flatten()
-    |> score_normal_frames(length(last_frame), 0)
-    |> add_last_frame_score(last_frame)
+  def score(%Bowling{} = game) do
+    case roll(game, 0) do
+      {:error, "Cannot roll after game is over"} ->
+        last_frame = hd(game.frames)
+
+        game.frames
+        |> Enum.reverse()
+        |> List.flatten()
+        |> score_normal_frames(length(last_frame), 0)
+        |> add_last_frame_score(last_frame)
+
+      _ ->
+        {:error, "Score cannot be taken until the end of the game"}
+    end
   end
 
   defp score_normal_frames([_1, _2, _3], 3, score) do
