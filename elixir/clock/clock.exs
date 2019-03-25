@@ -26,17 +26,11 @@ defmodule Clock do
   end
 
   defp handle_minute(minute) when minute >= 0 do
-    divrem(minute, 60)
+    {div(minute, 60), rem(minute, 60)}
   end
 
   defp handle_minute(minute) do
-    {hour_deficit, maybe_negative_minutes} = divrem(minute, 60)
-
-    if maybe_negative_minutes == 0 do
-      {hour_deficit, 0}
-    else
-      {hour_deficit - 1, 60 + maybe_negative_minutes}
-    end
+    {floor(minute / 60), Integer.mod(minute, 60)}
   end
 
   defp handle_hour(hour) when hour >= 0 do
@@ -44,17 +38,7 @@ defmodule Clock do
   end
 
   defp handle_hour(hour) do
-    maybe_negative_hours = rem(hour, 24)
-
-    if maybe_negative_hours == 0 do
-      0
-    else
-      24 + maybe_negative_hours
-    end
-  end
-
-  defp divrem(x, y) do
-    {div(x, y), rem(x, y)}
+    Integer.mod(hour, 24)
   end
 end
 
