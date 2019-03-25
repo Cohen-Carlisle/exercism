@@ -174,6 +174,16 @@ defmodule ForthTest do
     assert s == "1 1 1"
   end
 
+  test "redefining an existing word in the same string" do
+    s =
+      Forth.new()
+      |> Forth.eval(": foo dup ; : foo dup dup ;")
+      |> Forth.eval("1 foo")
+      |> Forth.format_stack()
+
+    assert s == "1 1 1"
+  end
+
   # @tag :pending
   test "redefining an existing built-in word" do
     s =

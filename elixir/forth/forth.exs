@@ -1,6 +1,6 @@
 defmodule Forth do
   defstruct [:stack, :aliases]
-  @opaque evaluator :: %Forth{stack: list(), aliases: list()}
+  @opaque evaluator :: %Forth{stack: list(integer()), aliases: keyword(String.t())}
 
   @doc """
   Create a new evaluator.
@@ -42,7 +42,7 @@ defmodule Forth do
     new_aliases =
       ~r/(?<=^| ): (.+?) ;(?= |$)/u
       |> Regex.scan(string, capture: :all_but_first)
-      |> List.foldr([], fn [alias_string], aliases ->
+      |> Enum.reduce([], fn [alias_string], aliases ->
         [name, expansion] = String.split(alias_string, " ", parts: 2)
 
         if String.match?(name, ~r/^[0-9]+$/) do
@@ -51,6 +51,7 @@ defmodule Forth do
 
         Keyword.put(aliases, String.to_atom(name), expansion)
       end)
+      |> Enum.reverse()
 
     updated_aliases =
       List.foldr(evaluator.aliases, new_aliases, fn {name, expansion}, aliases ->
