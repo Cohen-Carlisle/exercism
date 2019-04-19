@@ -17,7 +17,7 @@ defmodule Bob do
   end
 
   defp shouted?(input) do
-    not Regex.match?(~r/[[:lower:]]/, input) and Regex.match?(~r/[[:upper:]]/, input)
+    Regex.match?(~r/[[:upper:]]/, input) and not Regex.match?(~r/[[:lower:]]/, input)
   end
 
   defp question?(input) do
