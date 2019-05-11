@@ -13,42 +13,50 @@ defmodule ISBNVerifier do
   """
   @spec isbn?(String.t()) :: boolean
   def isbn?(raw_isbn) when is_binary(raw_isbn) do
-    isbn = String.replace(raw_isbn, "-", "")
-
-    case preprocess(isbn) do
+    case preprocess(raw_isbn) do
       {:ok, :isbn_10, digits, check} ->
-        {isbn_10_sum, _} = Enum.reduce(digits, {0, 10}, &calc_isbn_10_sum/2)
-        rem(isbn_10_sum + check, 11) == 0
+        check == calculate_isbn_10_check(digits)
 
       {:ok, :isbn_13, digits, check} ->
-        {isbn_13_sum, _} = Enum.reduce(digits, {0, 1}, &calc_isbn_13_sum/2)
-        10 - rem(isbn_13_sum, 10) == check
+        check == calculate_isbn_13_check(digits)
 
       :error ->
         false
     end
   end
 
-  defp preprocess(isbn_10) when byte_size(isbn_10) == 10 do
-    if Regex.match?(~r/^\d{9}[\dX]$/, isbn_10) do
-      {digits, check} = preprocess_isbn(isbn_10)
-      {:ok, :isbn_10, digits, check}
-    else
-      :error
+  def isbn_10_to_13(raw_isbn) when is_binary(raw_isbn) do
+    case preprocess(raw_isbn) do
+      {:ok, :isbn_10, digits, _check} ->
+        isbn_13_digits = prepend_gs1_prefix(digits)
+        check = isbn_13_digits |> calculate_isbn_13_check() |> int_to_check(13)
+        isbn_13 = Enum.join(isbn_13_digits) <> check
+
+        {:ok, isbn_13}
+
+      {:ok, :isbn_13, _digits, _check} ->
+        {:error, :valid_isbn_13}
+
+      :error ->
+        {:error, :invalid_isbn}
     end
   end
 
-  defp preprocess(isbn_13) when byte_size(isbn_13) == 13 do
-    if Regex.match?(~r/^\d{13}$/, isbn_13) do
-      {digits, check} = preprocess_isbn(isbn_13)
-      {:ok, :isbn_13, digits, check}
-    else
-      :error
-    end
-  end
+  defp preprocess(raw_isbn) do
+    isbn = String.replace(raw_isbn, "-", "")
 
-  defp preprocess(_isbn) do
-    :error
+    cond do
+      Regex.match?(~r/^\d{9}[\dX]$/, isbn) ->
+        {digits, check} = preprocess_isbn(isbn)
+        {:ok, :isbn_10, digits, check}
+
+      Regex.match?(~r/^\d{13}$/, isbn) ->
+        {digits, check} = preprocess_isbn(isbn)
+        {:ok, :isbn_13, digits, check}
+
+      true ->
+        :error
+    end
   end
 
   defp preprocess_isbn(isbn) do
@@ -75,19 +83,55 @@ defmodule ISBNVerifier do
     String.to_integer(check)
   end
 
-  defp calc_isbn_10_sum(digit, {sum, multiplier}) do
-    new_multiplier = multiplier - 1
-
-    {sum + multiplier * digit, new_multiplier}
+  defp int_to_check(10, 10) do
+    "X"
   end
 
-  defp calc_isbn_13_sum(digit, {sum, multiplier}) do
-    new_multiplier =
-      case multiplier do
-        1 -> 3
-        3 -> 1
-      end
+  defp int_to_check(10, 13) do
+    "0"
+  end
 
-    {sum + multiplier * digit, new_multiplier}
+  defp int_to_check(int, _) do
+    Integer.to_string(int)
+  end
+
+  defp calculate_isbn_10_sum(digits) do
+    {sum, _} =
+      Enum.reduce(digits, {0, 10}, fn digit, {partial_sum, multiplier} ->
+        new_multiplier = multiplier - 1
+
+        {partial_sum + multiplier * digit, new_multiplier}
+      end)
+
+    sum
+  end
+
+  defp calculate_isbn_13_sum(digits) do
+    {sum, _} =
+      Enum.reduce(digits, {0, 1}, fn digit, {partial_sum, multiplier} ->
+        new_multiplier =
+          case multiplier do
+            1 -> 3
+            3 -> 1
+          end
+
+        {partial_sum + multiplier * digit, new_multiplier}
+      end)
+
+    sum
+  end
+
+  defp calculate_isbn_10_check(digits) do
+    sum = calculate_isbn_10_sum(digits)
+    11 - rem(sum, 11)
+  end
+
+  defp calculate_isbn_13_check(digits) do
+    sum = calculate_isbn_13_sum(digits)
+    10 - rem(sum, 10)
+  end
+
+  defp prepend_gs1_prefix(digits) do
+    [9, 7, 8 | digits]
   end
 end

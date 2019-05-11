@@ -80,4 +80,8 @@ defmodule ISBNVerifierTest do
   test "invalid isbn-13 check digit" do
     refute ISBNVerifier.isbn?("978-0-306-40615-8")
   end
+
+  test "isbn-10 to isbn-13" do
+    assert ISBNVerifier.isbn_10_to_13("81-7525-766-0") == {:ok, "9788175257665"}
+  end
 end
