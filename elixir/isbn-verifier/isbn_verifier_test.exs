@@ -72,4 +72,12 @@ defmodule ISBNVerifierTest do
   test "check digit of X should not be used for 0" do
     refute ISBNVerifier.isbn?("3-598-21515-X")
   end
+
+  test "valid isbn-13" do
+    assert ISBNVerifier.isbn?("978-0-306-40615-7")
+  end
+
+  test "invalid isbn-13 check digit" do
+    refute ISBNVerifier.isbn?("978-0-306-40615-8")
+  end
 end
