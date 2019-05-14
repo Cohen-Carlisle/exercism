@@ -1,6 +1,6 @@
 defmodule ISBNVerifier do
   @doc """
-    Checks if a string is a valid ISBN-10 identifier
+    Checks if a string is a valid ISBN-10 or ISBN-13 identifier.
 
     ## Examples
 
@@ -9,9 +9,8 @@ defmodule ISBNVerifier do
 
       iex> ISBNVerifier.isbn?("3-598-2K507-0")
       false
-
   """
-  @spec isbn?(String.t()) :: boolean
+  @spec isbn?(String.t()) :: boolean()
   def isbn?(raw_isbn) when is_binary(raw_isbn) do
     case preprocess(raw_isbn) do
       {:ok, :isbn_10, digits, check} -> check == calculate_isbn_10_check(digits)
@@ -20,7 +19,21 @@ defmodule ISBNVerifier do
     end
   end
 
-  @spec isbn_10_to_13(String.t()) :: String.t()
+  @doc """
+    Converts a valid ISBN-10 to an ISBN-13.
+
+    ## Examples
+
+      iex> ISBNVerifier.isbn_10_to_13("3-598-21507-X")
+      {:ok, "9783598215070"}
+
+      iex> ISBNVerifier.isbn_10_to_13("3-598-2K507-0")
+      {:error, :invalid_isbn}
+
+      iex> ISBNVerifier.isbn_10_to_13("3-598-2K507-0")
+      {:error, :valid_isbn_13}
+  """
+  @spec isbn_10_to_13(String.t()) :: {:ok, String.t()} | {:error, atom()}
   def isbn_10_to_13(raw_isbn) when is_binary(raw_isbn) do
     case preprocess(raw_isbn) do
       {:ok, :isbn_10, digits, _check} ->
