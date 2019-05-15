@@ -12,11 +12,11 @@ defmodule RotationalCipher do
   end
 
   defp do_rotate(char, shift) when char in ?a..?z do
-    rem(char - ?a + shift, 26) + ?a
+    Integer.mod(char - ?a + shift, 26) + ?a
   end
 
   defp do_rotate(char, shift) when char in ?A..?Z do
-    rem(char - ?A + shift, 26) + ?A
+    Integer.mod(char - ?A + shift, 26) + ?A
   end
 
   defp do_rotate(char, _shift) do
