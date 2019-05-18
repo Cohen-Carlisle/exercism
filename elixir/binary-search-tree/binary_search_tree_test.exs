@@ -8,8 +8,8 @@ ExUnit.configure(exclude: :pending, trace: true)
 defmodule BinarySearchTreeTest do
   use ExUnit.Case
 
-  test "retains data" do
-    assert BinarySearchTree.new(4).data == 4
+  test "retains value" do
+    assert BinarySearchTree.new(4).value == 4
   end
 
   @tag :pending
@@ -18,8 +18,8 @@ defmodule BinarySearchTreeTest do
       BinarySearchTree.new(4)
       |> BinarySearchTree.insert(2)
 
-    assert root.data == 4
-    assert root.left.data == 2
+    assert root.value == 4
+    assert root.left.value == 2
   end
 
   @tag :pending
@@ -28,8 +28,8 @@ defmodule BinarySearchTreeTest do
       BinarySearchTree.new(4)
       |> BinarySearchTree.insert(4)
 
-    assert root.data == 4
-    assert root.left.data == 4
+    assert root.value == 4
+    assert root.left.value == 4
   end
 
   @tag :pending
@@ -38,8 +38,8 @@ defmodule BinarySearchTreeTest do
       BinarySearchTree.new(4)
       |> BinarySearchTree.insert(5)
 
-    assert root.data == 4
-    assert root.right.data == 5
+    assert root.value == 4
+    assert root.right.value == 5
   end
 
   @tag :pending
@@ -53,13 +53,13 @@ defmodule BinarySearchTreeTest do
       |> BinarySearchTree.insert(7)
       |> BinarySearchTree.insert(5)
 
-    assert root.data == 4
-    assert root.left.data == 2
-    assert root.left.left.data == 1
-    assert root.left.right.data == 3
-    assert root.right.data == 6
-    assert root.right.left.data == 5
-    assert root.right.right.data == 7
+    assert root.value == 4
+    assert root.left.value == 2
+    assert root.left.left.value == 1
+    assert root.left.right.value == 3
+    assert root.right.value == 6
+    assert root.right.left.value == 5
+    assert root.right.right.value == 7
   end
 
   @tag :pending
