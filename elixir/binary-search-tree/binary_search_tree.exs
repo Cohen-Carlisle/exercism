@@ -48,6 +48,19 @@ defmodule BinarySearchTree do
   """
   @spec in_order(BinTree.t()) :: list(any())
   def in_order(%BinTree{} = binary_tree) do
-    binary_tree # Your implementation here
+    []
+    |> do_in_order(binary_tree)
+    |> Enum.reverse()
+    end
+
+  defp do_in_order(values, nil) do
+    values
+  end
+
+  defp do_in_order(values, binary_tree) do
+    values
+    |> do_in_order(binary_tree.left)
+    |> List.insert_at(0, binary_tree.value)
+    |> do_in_order(binary_tree.right)
   end
 end

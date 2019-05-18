@@ -69,7 +69,7 @@ defmodule BinarySearchTreeTest do
     assert [4] == BinarySearchTree.in_order(root)
   end
 
-  @tag :pending
+  # @tag :pending
   test "iterating over smaller element" do
     root =
       BinarySearchTree.new(4)
@@ -78,7 +78,7 @@ defmodule BinarySearchTreeTest do
     assert [2, 4] == BinarySearchTree.in_order(root)
   end
 
-  @tag :pending
+  # @tag :pending
   test "iterating over larger element" do
     root =
       BinarySearchTree.new(4)
@@ -87,7 +87,7 @@ defmodule BinarySearchTreeTest do
     assert [4, 5] == BinarySearchTree.in_order(root)
   end
 
-  @tag :pending
+  # @tag :pending
   test "iterating over complex tree" do
     root =
       BinarySearchTree.new(4)
