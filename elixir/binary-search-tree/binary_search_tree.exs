@@ -51,7 +51,7 @@ defmodule BinarySearchTree do
     []
     |> do_in_order(binary_tree)
     |> Enum.reverse()
-    end
+  end
 
   defp do_in_order(values, nil) do
     values
