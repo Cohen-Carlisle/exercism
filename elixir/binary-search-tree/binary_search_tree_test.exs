@@ -12,7 +12,7 @@ defmodule BinarySearchTreeTest do
     assert BinarySearchTree.new(4).value == 4
   end
 
-  @tag :pending
+  # @tag :pending
   test "inserting lower number" do
     root =
       BinarySearchTree.new(4)
@@ -22,7 +22,7 @@ defmodule BinarySearchTreeTest do
     assert root.left.value == 2
   end
 
-  @tag :pending
+  # @tag :pending
   test "inserting same number" do
     root =
       BinarySearchTree.new(4)
@@ -32,7 +32,7 @@ defmodule BinarySearchTreeTest do
     assert root.left.value == 4
   end
 
-  @tag :pending
+  # @tag :pending
   test "inserting higher number" do
     root =
       BinarySearchTree.new(4)
@@ -42,7 +42,7 @@ defmodule BinarySearchTreeTest do
     assert root.right.value == 5
   end
 
-  @tag :pending
+  # @tag :pending
   test "complex tree" do
     root =
       BinarySearchTree.new(4)
@@ -62,7 +62,7 @@ defmodule BinarySearchTreeTest do
     assert root.right.right.value == 7
   end
 
-  @tag :pending
+  # @tag :pending
   test "iterating one element" do
     root = BinarySearchTree.new(4)
 
