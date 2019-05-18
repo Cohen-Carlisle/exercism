@@ -19,28 +19,28 @@ defmodule BinarySearchTree do
     |> do_insert(new_value)
   end
 
-  defp do_insert(%Zipper{focus: %{value: value, left: nil}} = zipper, new_value) when new_value <= value do
-    zipper
-    |> Zipper.set_left(BinarySearchTree.new(new_value))
-    |> Zipper.to_tree()
-  end
+  defp do_insert(%Zipper{focus: %{value: value, left: left, right: right}} = zipper, new_value) do
+    case {new_value <= value, left, right} do
+      {true, nil, _} ->
+        zipper
+        |> Zipper.set_left(BinarySearchTree.new(new_value))
+        |> Zipper.to_tree()
 
-  defp do_insert(%Zipper{focus: %{value: value}} = zipper, new_value) when new_value <= value do
-    zipper
-    |> Zipper.left()
-    |> do_insert(new_value)
-  end
+      {true, _, _} ->
+        zipper
+        |> Zipper.left()
+        |> do_insert(new_value)
 
-  defp do_insert(%Zipper{focus: %{right: nil}} = zipper, new_value) do
-    zipper
-    |> Zipper.set_right(BinarySearchTree.new(new_value))
-    |> Zipper.to_tree()
-  end
+      {false, _, nil} ->
+        zipper
+        |> Zipper.set_right(BinarySearchTree.new(new_value))
+        |> Zipper.to_tree()
 
-  defp do_insert(%Zipper{} = zipper, new_value) do
-    zipper
-    |> Zipper.right()
-    |> do_insert(new_value)
+      {false, _, _} ->
+        zipper
+        |> Zipper.right()
+        |> do_insert(new_value)
+    end
   end
 
   @doc """
