@@ -12,20 +12,30 @@ defmodule Queens do
   end
 
   defp do_new({color, {x, y}}, acc) do
+    validate_color!(color)
+    validate_coords_in_range!({x, y})
+    validate_coords_unoccupied!({x, y}, acc)
+
+    %{acc | color => {x, y}}
+  end
+
+  defp validate_color!(color) do
     if color not in @valid_queen_colors do
       raise ArgumentError,
             "Queen color must be in #{inspect(@valid_queen_colors)}, got: #{inspect(color)}"
     end
+  end
 
+  defp validate_coords_in_range!({x, y}) do
     if x not in 0..7 or y not in 0..7 do
       raise ArgumentError, "Coordinates must be in 0..7, got: #{inspect({x, y})}"
     end
+  end
 
-    if {x, y} in Map.values(acc) do
-      raise ArgumentError, "Cannot place a queen on another queen at #{inspect({x, y})}"
+  defp validate_coords_unoccupied!(coords, acc) do
+    if coords in Map.values(acc) do
+      raise ArgumentError, "Cannot place a queen on another queen at #{inspect(coords)}"
     end
-
-    %{acc | color => {x, y}}
   end
 
   @doc """
