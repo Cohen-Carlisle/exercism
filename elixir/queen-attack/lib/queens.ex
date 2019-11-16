@@ -50,6 +50,11 @@ defmodule Queens do
   Checks if the queens can attack each other
   """
   @spec can_attack?(Queens.t()) :: boolean
-  def can_attack?(queens) do
+  def can_attack?(%__MODULE__{black: {bx, by}, white: {wx, wy}}) do
+    bx == wx or by == wy or abs(bx - wx) == abs(by - wy)
+  end
+
+  def can_attack?(%__MODULE__{}) do
+    false
   end
 end
