@@ -44,6 +44,34 @@ defmodule Queens do
   """
   @spec to_string(Queens.t()) :: String.t()
   def to_string(%Queens{} = queens) do
+    """
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _
+    """
+    |> String.trim()
+    |> place_queen(queens.black, "B")
+    |> place_queen(queens.white, "W")
+  end
+
+  defp place_queen(str, nil, _) do
+    str
+  end
+
+  defp place_queen(str, {r, c}, queen_char) do
+    chars_until_queen = r * 16 + c * 2
+
+    Regex.replace(
+      ~r/(.{#{chars_until_queen}})_/s,
+      str,
+      fn _, str_until_queen -> "#{str_until_queen}#{queen_char}" end,
+      global: false
+    )
   end
 
   @doc """

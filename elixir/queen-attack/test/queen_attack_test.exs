@@ -115,7 +115,7 @@ defmodule QueenAttackTest do
   end
 
   describe "test the string representation of queens on board" do
-    @tag :pending
+    # @tag :pending
     test "string representation" do
       queens = Queens.new(white: {2, 4}, black: {6, 6})
 
@@ -134,7 +134,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "another string representation" do
       queens = Queens.new(white: {7, 1}, black: {0, 0})
 
@@ -153,7 +153,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "yet another string representation" do
       queens = Queens.new(white: {4, 3}, black: {3, 4})
 
@@ -172,7 +172,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "queen placed on the bottom right corner" do
       queens = Queens.new(white: {4, 3}, black: {7, 7})
 
@@ -191,7 +191,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "queen placed on the edge of the board" do
       queens = Queens.new(white: {4, 3}, black: {2, 7})
 
@@ -210,7 +210,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "queens positioned on the same row" do
       queens = Queens.new(white: {4, 4}, black: {4, 5})
 
@@ -229,7 +229,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "string representation with single white queen" do
       queens = Queens.new(white: {2, 4})
 
@@ -248,7 +248,7 @@ defmodule QueenAttackTest do
       assert Queens.to_string(queens) == board
     end
 
-    @tag :pending
+    # @tag :pending
     test "string representation with single black queen" do
       queens = Queens.new(black: {3, 5})
 
