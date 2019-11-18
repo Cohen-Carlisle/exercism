@@ -11,12 +11,12 @@ defmodule Queens do
     Enum.reduce(opts, %__MODULE__{}, &do_new/2)
   end
 
-  defp do_new({color, {x, y}}, acc) do
+  defp do_new({color, {row, col}}, acc) do
     validate_color!(color)
-    validate_coords_in_range!({x, y})
-    validate_coords_unoccupied!({x, y}, acc)
+    validate_coords_in_range!({row, col})
+    validate_coords_unoccupied!({row, col}, acc)
 
-    %{acc | color => {x, y}}
+    %{acc | color => {row, col}}
   end
 
   defp validate_color!(color) do
@@ -26,9 +26,9 @@ defmodule Queens do
     end
   end
 
-  defp validate_coords_in_range!({x, y}) do
-    if x not in 0..7 or y not in 0..7 do
-      raise ArgumentError, "Coordinates must be in 0..7, got: #{inspect({x, y})}"
+  defp validate_coords_in_range!({row, col}) do
+    if row not in 0..7 or col not in 0..7 do
+      raise ArgumentError, "Coordinates must be in 0..7, got: #{inspect({row, col})}"
     end
   end
 
@@ -43,15 +43,16 @@ defmodule Queens do
   white and black queen locations shown
   """
   @spec to_string(Queens.t()) :: String.t()
-  def to_string(queens) do
+  def to_string(%Queens{} = queens) do
   end
 
   @doc """
   Checks if the queens can attack each other
   """
   @spec can_attack?(Queens.t()) :: boolean
-  def can_attack?(%__MODULE__{black: {bx, by}, white: {wx, wy}}) do
-    bx == wx or by == wy or abs(bx - wx) == abs(by - wy)
+  def can_attack?(%__MODULE__{black: {black_row, black_col}, white: {white_row, white_col}}) do
+    black_row == white_row or black_col == white_col or
+      abs(black_row - white_row) == abs(black_col - white_col)
   end
 
   def can_attack?(%__MODULE__{}) do
