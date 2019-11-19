@@ -63,8 +63,8 @@ defmodule Queens do
     str
   end
 
-  defp place_queen(str, {r, c}, queen_char) do
-    chars_until_queen = r * 16 + c * 2
+  defp place_queen(str, {row, col}, queen_char) do
+    chars_until_queen = (row * 8 + col) * 2
 
     Regex.replace(
       ~r/(.{#{chars_until_queen}})_/s,
