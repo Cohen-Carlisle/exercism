@@ -9,7 +9,8 @@ defmodule MatchingBrackets do
     do_check_brackets(rest, [char | brackets_list])
   end
 
-  defp do_check_brackets(<<char, rest::binary>>, [head | tail]) when char in [?), ?], ?}] do
+  defp do_check_brackets(<<char, rest::binary>>, brackets_list) when char in [?), ?], ?}] do
+    {head, tail} = List.pop_at(brackets_list, 0)
     brackets_match?(head, char) && do_check_brackets(rest, tail)
   end
 
@@ -18,7 +19,7 @@ defmodule MatchingBrackets do
   end
 
   defp do_check_brackets("", []), do: true
-  defp do_check_brackets(_str, _brackets_list), do: false
+  defp do_check_brackets("", [_head | _tail]), do: false
 
   defp brackets_match?(?(, ?)), do: true
   defp brackets_match?(?[, ?]), do: true

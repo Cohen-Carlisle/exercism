@@ -72,4 +72,9 @@ defmodule MatchingBracketsTest do
              "\\left(\\begin{array}{cc} \\frac{1}{3} & x\\\\ \\mathrm{e}^{x} &... x^2 \\end{array}\\right)"
            )
   end
+
+  # @tag :pending
+  test "just closing bracket" do
+    refute MatchingBrackets.check_brackets(")")
+  end
 end
