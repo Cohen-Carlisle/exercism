@@ -1,5 +1,9 @@
+# languages
 /ecmascript/**/node_modules/
 /ecmascript/**/package-lock.json
-/python/**/__pycache__/
-/users/
 /elm/**/elm-stuff/
+/python/**/__pycache__/
+
+# other stuff
+/teams/
+/users/
