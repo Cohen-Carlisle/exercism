@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -o errexit
+# set -o nounset
+
+if [[ $# -ne 3 ]]; then
+  echo "Usage: $0 <team> <language> <exercise>"
+  exit 1
+fi
+
+team="$1"
+lang="$2"
+x="$3"
+
+if [[ "$lang" -ne "elixir" ]]; then
+  echo "Usage: xcpteam <team> <language> <exercise>"
+  echo "$lang not supported. Only elixir is currently supported"
+  exit 2
+fi
+
+if command -v exercism > /dev/null; then
+  workspace=$(exercism workspace)
+else
+  echo "exercism not detected. Install exercism."
+  exit 3
+fi
+
+xfile="${workspace}/elixir/${x}/lib/$(echo $x | tr '-' '_').ex"
+teamdir="${workspace}/teams/${team}/elixir/${x}/lib"
+
+if [[ -f "$xfile" && -d "$teamdir" ]]; then
+  cp "$xfile" "$teamdir"
+else
+  echo "Could not find combination of exercise file and team directory:"
+  echo "  $xfile"
+  echo "  $teamdir"
+  echo "Make sure both exist and try again."
+  exit 4
+fi
