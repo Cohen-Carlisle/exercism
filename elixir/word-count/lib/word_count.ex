@@ -1,4 +1,4 @@
-defmodule Words do
+defmodule WordCount do
   def count(sentence) do
     sentence
     |> String.downcase()
