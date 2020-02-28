@@ -13,7 +13,7 @@ defmodule WordCount do
   end
 
   defp to_word_count_map(word_list) do
-    update_count = fn word, acc -> Map.update(acc, word, 1, &(&1 + 1)) end
+    update_count = fn word, map -> Map.update(map, word, 1, &(&1 + 1)) end
     Enum.reduce(word_list, %{}, update_count)
   end
 end
