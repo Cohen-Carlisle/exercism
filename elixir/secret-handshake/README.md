@@ -1,14 +1,12 @@
 # Secret Handshake
 
-Given a decimal number, convert it to the appropriate sequence of events for a secret handshake.
-
 > There are 10 types of people in the world: Those who understand
 > binary, and those who don't.
 
 You and your fellow cohort of those in the "know" when it comes to
 binary decide to come up with a secret "handshake".
 
-```
+```text
 1 = wink
 10 = double blink
 100 = close your eyes
@@ -17,6 +15,8 @@ binary decide to come up with a secret "handshake".
 
 10000 = Reverse the order of the operations in the secret handshake.
 ```
+
+Given a decimal number, convert it to the appropriate sequence of events for a secret handshake.
 
 Here's a couple of examples:
 
@@ -49,16 +49,14 @@ Check: 0b10110
 
 Flags &&& Check: 0b10010 (Third bit not set)
 
+
 ## Running tests
 
 Execute the tests with:
 
 ```bash
-$ elixir bob_test.exs
+$ mix test
 ```
-
-(Replace `bob_test.exs` with the name of the test file.)
-
 
 ### Pending tests
 
@@ -83,13 +81,13 @@ Or, you can enable all the tests by commenting out the
 # ExUnit.configure exclude: :pending, trace: true
 ```
 
-For more detailed information about the Elixir track, please
-see the [help page](http://exercism.io/languages/elixir).
+If you're stuck on something, it may help to look at some of
+the [available resources](https://exercism.io/tracks/elixir/resources)
+out there where answers might be found.
 
 ## Source
 
-Bert, in Mary Poppins [http://www.imdb.com/character/ch0011238/quotes](http://www.imdb.com/character/ch0011238/quotes)
+Bert, in Mary Poppins [http://www.imdb.com/title/tt0058331/quotes/qt0437047](http://www.imdb.com/title/tt0058331/quotes/qt0437047)
 
-## Submitting Incomplete Problems
+## Submitting Incomplete Solutions
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.
-
