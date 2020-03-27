@@ -16,11 +16,12 @@ defmodule RobotSimulator do
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
-  @spec create(direction(), position()) :: robot()
+  @spec create() :: robot()
   def create do
     %RobotSimulator{}
   end
 
+  @spec create(direction(), position()) :: robot()
   def create(direction, position) when is_direction(direction) and is_position(position) do
     %RobotSimulator{direction: direction, position: position}
   end
@@ -80,42 +81,42 @@ defmodule RobotSimulator do
     robot
   end
 
-  defp do_simulate(%RobotSimulator{direction: d, position: p}, "A" <> rest) do
-    do_simulate(%RobotSimulator{direction: d, position: advance(d, p)}, rest)
+  defp do_simulate(robot, "A" <> rest) do
+    robot |> advance() |> do_simulate(rest)
   end
 
-  defp do_simulate(%RobotSimulator{direction: d, position: p}, "L" <> rest) do
-    do_simulate(%RobotSimulator{direction: turn_left(d), position: p}, rest)
+  defp do_simulate(robot, "L" <> rest) do
+    robot |> turn_left() |> do_simulate(rest)
   end
 
-  defp do_simulate(%RobotSimulator{direction: d, position: p}, "R" <> rest) do
-    do_simulate(%RobotSimulator{direction: turn_right(d), position: p}, rest)
+  defp do_simulate(robot, "R" <> rest) do
+    robot |> turn_right() |> do_simulate(rest)
   end
 
-  defp advance(direction, {x, y}) do
-    case direction do
-      :north -> {x, y + 1}
-      :east -> {x + 1, y}
-      :south -> {x, y - 1}
-      :west -> {x - 1, y}
+  defp advance(%{position: {x, y}} = robot) do
+    case robot.direction do
+      :north -> %{robot | position: {x, y + 1}}
+      :east -> %{robot | position: {x + 1, y}}
+      :south -> %{robot | position: {x, y - 1}}
+      :west -> %{robot | position: {x - 1, y}}
     end
   end
 
-  defp turn_left(direction) do
-    case direction do
-      :north -> :west
-      :east -> :north
-      :south -> :east
-      :west -> :south
+  defp turn_left(robot) do
+    case robot.direction do
+      :north -> %{robot | direction: :west}
+      :east -> %{robot | direction: :north}
+      :south -> %{robot | direction: :east}
+      :west -> %{robot | direction: :south}
     end
   end
 
-  defp turn_right(direction) do
-    case direction do
-      :north -> :east
-      :east -> :south
-      :south -> :west
-      :west -> :north
+  defp turn_right(robot) do
+    case robot.direction do
+      :north -> %{robot | direction: :east}
+      :east -> %{robot | direction: :south}
+      :south -> %{robot | direction: :west}
+      :west -> %{robot | direction: :north}
     end
   end
 end
