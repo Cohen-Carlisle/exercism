@@ -2,7 +2,7 @@ defmodule BeerSong do
   @doc """
   Get a single verse of the beer song
   """
-  @spec verse(integer) :: String.t()
+  @spec verse(integer()) :: String.t()
   def verse(0) do
     """
     No more bottles of beer on the wall, no more bottles of beer.
@@ -21,12 +21,8 @@ defmodule BeerSong do
   Get the entire beer song for a given range of numbers of bottles.
   """
   @spec lyrics(Range.t()) :: String.t()
-  def lyrics do
-    lyrics(99..0)
-  end
-
-  def lyrics(range) do
-    range
+  def lyrics(verses \\ 99..0) do
+    verses
     |> Enum.map(&verse/1)
     |> Enum.join("\n")
   end
