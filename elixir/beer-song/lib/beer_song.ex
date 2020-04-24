@@ -22,9 +22,7 @@ defmodule BeerSong do
   """
   @spec lyrics(Range.t()) :: String.t()
   def lyrics(verses \\ 99..0) do
-    verses
-    |> Enum.map(&verse/1)
-    |> Enum.join("\n")
+    Enum.map_join(verses, "\n", &verse/1)
   end
 
   defp bottles(0), do: "no more bottles"
