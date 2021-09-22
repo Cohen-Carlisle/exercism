@@ -7,7 +7,7 @@ defmodule LanguageList do
 
   def first(list), do: hd(list)
 
-  def count(list), do: Enum.count(list)
+  def count(list), do: length(list)
 
-  def exciting_list?(list), do: Enum.member?(list, "Elixir")
+  def exciting_list?(list), do: "Elixir" in list
 end
