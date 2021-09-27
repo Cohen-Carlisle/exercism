@@ -1,14 +1,17 @@
 defmodule Username do
   def sanitize(username) do
-    do_sanitize(username, '')
+    Enum.flat_map(username, &do_sanitize/1)
   end
 
-  defp do_sanitize([c | rest], alias) when c in ?a..?z, do: do_sanitize(rest, [c | alias])
-  defp do_sanitize([?_ | rest], alias), do: do_sanitize(rest, [?_ | alias])
-  defp do_sanitize([?ä | rest], alias), do: do_sanitize(rest, ['ae' | alias])
-  defp do_sanitize([?ö | rest], alias), do: do_sanitize(rest, ['oe' | alias])
-  defp do_sanitize([?ü | rest], alias), do: do_sanitize(rest, ['ue' | alias])
-  defp do_sanitize([?ß | rest], alias), do: do_sanitize(rest, ['ss' | alias])
-  defp do_sanitize([_c | rest], alias), do: do_sanitize(rest, alias)
-  defp do_sanitize('', alias), do: alias |> Enum.reverse() |> List.flatten()
+  defp do_sanitize(char) do
+    case char do
+      char when char in ?a..?z -> [char]
+      ?_ -> '_'
+      ?ä -> 'ae'
+      ?ö -> 'oe'
+      ?ü -> 'ue'
+      ?ß -> 'ss'
+      _ -> ''
+    end
+  end
 end
