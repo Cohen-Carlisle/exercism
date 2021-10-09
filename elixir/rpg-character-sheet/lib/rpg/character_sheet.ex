@@ -20,9 +20,7 @@ defmodule RPG.CharacterSheet do
     name = ask_name()
     class = ask_class()
     level = ask_level()
-    character = %{name: name, class: class, level: level}
-    IO.puts("Your character: #{inspect(character)}")
-    character
+    IO.inspect(%{name: name, class: class, level: level}, label: "Your character")
   end
 
   defp prompt_for_string(device \\ :stdio, prompt) do
