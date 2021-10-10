@@ -8,11 +8,14 @@ defmodule TakeANumber do
       {:report_state, pid} ->
         send(pid, state)
         loop(state)
+
       {:take_a_number, pid} ->
         send(pid, state + 1)
         loop(state + 1)
+
       :stop ->
         :stop
+
       _ ->
         loop(state)
     end
