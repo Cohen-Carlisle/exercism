@@ -10,11 +10,11 @@ defmodule NameBadge do
     "#{name} - #{String.upcase(department_or_owner)}"
   end
 
-  defp print_id_if_not_nil(name_and_department, nil) do
-    name_and_department
-  end
-
   defp print_id_if_not_nil(name_and_department, id) do
-    "[#{id}] - " <> name_and_department
+    if is_nil(id) do
+      name_and_department
+    else
+      "[#{id}] - " <> name_and_department
+    end
   end
 end
