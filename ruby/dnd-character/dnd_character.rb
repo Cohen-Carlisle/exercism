@@ -2,7 +2,7 @@ class DndCharacter
   attr_reader :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma
 
   def self.modifier(score)
-    ((score - 10) / 2)
+    (score - 10) / 2
   end
 
   def initialize
