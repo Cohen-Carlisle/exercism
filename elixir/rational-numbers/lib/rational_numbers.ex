@@ -42,6 +42,7 @@ defmodule RationalNumbers do
   """
   @spec pow_rational(a :: rational, exponent :: integer) :: rational
   def pow_rational({n, d}, exponent) when exponent < 0, do: pow_rational({d, n}, -exponent)
+
   def pow_rational({n, d}, exponent) do
     reduce({n ** exponent, d ** exponent})
   end
@@ -51,8 +52,7 @@ defmodule RationalNumbers do
   """
   @spec pow_real(base :: integer, exponent :: rational) :: float
   def pow_real(base, {n, d}) do
-    base ** (n/d)
-    # Exponentiation of a real number `x` to a rational number `r = a/b` is `x^(a/b) = root(x^a, b)`, where `root(p, q)` is the `q`th root of `p`.
+    base ** (n / d)
   end
 
   @doc """
@@ -61,6 +61,7 @@ defmodule RationalNumbers do
   @spec reduce(a :: rational) :: rational
   def reduce({n, d}) do
     gcd = Integer.gcd(n, d)
+
     if d > 0 do
       {div(n, gcd), div(d, gcd)}
     else
