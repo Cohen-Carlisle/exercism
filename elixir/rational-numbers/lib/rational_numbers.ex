@@ -59,13 +59,10 @@ defmodule RationalNumbers do
   Reduce a rational number to its lowest terms
   """
   @spec reduce(a :: rational) :: rational
+  def reduce({n, d}) when d < 0, do: reduce({-n, -d})
+
   def reduce({n, d}) do
     gcd = Integer.gcd(n, d)
-
-    if d > 0 do
-      {div(n, gcd), div(d, gcd)}
-    else
-      {-div(n, gcd), -div(d, gcd)}
-    end
+    {div(n, gcd), div(d, gcd)}
   end
 end
