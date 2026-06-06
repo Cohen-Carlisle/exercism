@@ -1,5 +1,5 @@
 defmodule Allergies do
-  use Bitwise
+  import Bitwise
 
   @allergen_codes [
     eggs: 1,
