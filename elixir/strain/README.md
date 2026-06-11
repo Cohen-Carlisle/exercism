@@ -1,10 +1,13 @@
 # Strain
 
-Implement the `keep` and `discard` operation on collections. Given a collection and a predicate on the collection's elements, `keep` returns a new collection containing those elements where the predicate is true, while `discard` returns a new collection containing those elements where the predicate is false.
+Welcome to Strain on Exercism's Elixir Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+If you get stuck on the exercise, check out `HINTS.md`, but try and solve it without using those first :)
 
-Write two functions that each take a function and a list.  One of them will
-return the list of items for which the passed in function is true, and the
-other will return the items for which it is false.
+## Instructions
+
+Implement the `keep` and `discard` operation on collections.
+Given a collection and a predicate on the collection's elements, `keep` returns a new collection containing those elements where the predicate is true, while `discard` returns a new collection containing those elements where the predicate is false.
 
 For example, given the collection of numbers:
 
@@ -24,59 +27,30 @@ While your discard operation should produce:
 
 Note that the union of keep and discard is all the elements.
 
-The functions may be called `keep` and `discard`, or they may need different
-names in order to not clash with existing functions or concepts in your
-language.
+The functions may be called `keep` and `discard`, or they may need different names in order to not clash with existing functions or concepts in your language.
 
 ## Restrictions
 
-Keep your hands off that filter/reject/whatchamacallit functionality
-provided by your standard library!  Solve this one yourself using other
-basic tools instead.
-
-`apply` will let you pass arguments to a function, as will `fun.(args)`
-
-## Running tests
-
-Execute the tests with:
-
-```bash
-$ elixir bob_test.exs
-```
-
-(Replace `bob_test.exs` with the name of the test file.)
-
-
-### Pending tests
-
-In the test suites, all but the first test have been skipped.
-
-Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
-
-For example:
-
-```elixir
-# @tag :pending
-test "shouting" do
-  assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
-end
-```
-
-Or, you can enable all the tests by commenting out the
-`ExUnit.configure` line in the test suite.
-
-```elixir
-# ExUnit.configure exclude: :pending, trace: true
-```
-
-For more detailed information about the Elixir track, please
-see the [help page](http://exercism.io/languages/elixir).
+Keep your hands off that filter/reject/whatchamacallit functionality provided by your standard library!
+Solve this one yourself using other basic tools instead.
 
 ## Source
 
-Conversation with James Edward Gray II [https://twitter.com/jeg2](https://twitter.com/jeg2)
+### Created by
 
-## Submitting Incomplete Problems
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @petehuang
 
+### Contributed to by
+
+- @angelikatyborska
+- @Cohen-Carlisle
+- @devonestes
+- @DoggettCK
+- @fxn
+- @kytrinyx
+- @neenjaw
+- @sotojuan
+
+### Based on
+
+Conversation with James Edward Gray II - http://graysoftinc.com/
