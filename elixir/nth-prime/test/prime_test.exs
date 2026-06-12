@@ -1,11 +1,4 @@
-if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("nth_prime.exs", __DIR__)
-end
-
-ExUnit.start
-ExUnit.configure exclude: :pending, trace: true
-
-defmodule NthPrimeTest do
+defmodule PrimeTest do
   use ExUnit.Case
 
   # @tag :pending
@@ -18,7 +11,7 @@ defmodule NthPrimeTest do
     assert Prime.nth(2) == 3
   end
 
-  # @tag :pendisng
+  # @tag :pending
   test "sixth prime" do
     assert Prime.nth(6) == 13
   end
@@ -28,12 +21,14 @@ defmodule NthPrimeTest do
     assert Prime.nth(100) == 541
   end
 
-  test "really big prime" do
-    assert Prime.nth(10_001) == 104_743
+  # @tag :pending
+  @tag :slow
+  test "big prime" do
+    assert Prime.nth(10001) == 104_743
   end
 
   # @tag :pending
-  test "weird case" do
-    catch_error Prime.nth(0)
+  test "there is no zeroth prime" do
+    catch_error(Prime.nth(0))
   end
 end

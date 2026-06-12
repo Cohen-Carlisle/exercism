@@ -1,50 +1,42 @@
 # Nth Prime
 
+Welcome to Nth Prime on Exercism's Elixir Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
+
+## Instructions
+
 Given a number n, determine what the nth prime is.
 
-By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that
-the 6th prime is 13.
+By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
 
-If your language provides methods in the standard library to deal with prime
-numbers, pretend they don't exist and implement them yourself.
+If your language provides methods in the standard library to deal with prime numbers, pretend they don't exist and implement them yourself.
 
-## Running tests
+## Slow tests
 
-Execute the tests with:
-
-```bash
-$ elixir nth_prime_test.exs
-```
-
-### Pending tests
-
-In the test suites, all but the first test have been skipped.
-
-Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
-
-For example:
-
-```elixir
-# @tag :pending
-test "shouting" do
-  assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
-end
-```
-
-Or, you can enable all the tests by commenting out the
-`ExUnit.configure` line in the test suite.
-
-```elixir
-# ExUnit.configure exclude: :pending, trace: true
-```
-
-For more detailed information about the Elixir track, please
-see the [help page](http://exercism.io/languages/elixir).
+One or several of the tests of this exercise have been tagged as `:slow`, because they might take a long time to finish. For this reason, they will not be run on the platform by the automated test runner. If you are solving this exercise directly on the platform in the web editor, you might want to consider downloading this exercise to your machine instead. This will allow you to run all the tests and check the efficiency of your solution.
 
 ## Source
 
-A variation on Problem 7 at Project Euler [http://projecteuler.net/problem=7](http://projecteuler.net/problem=7)
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @petehuang
+
+### Contributed to by
+
+- @andrewsardone
+- @angelikatyborska
+- @Cohen-Carlisle
+- @dalexj
+- @devonestes
+- @jinyeow
+- @lpil
+- @neenjaw
+- @parkerl
+- @rubysolo
+- @sotojuan
+- @Teapane
+- @waiting-for-dev
+
+### Based on
+
+A variation on Problem 7 at Project Euler - https://projecteuler.net/problem=7
