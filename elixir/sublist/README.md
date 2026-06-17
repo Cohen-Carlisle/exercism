@@ -1,60 +1,55 @@
 # Sublist
 
-Write a function to determine if a list is a sublist of another list.
+Welcome to Sublist on Exercism's Elixir Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
 
-Write a function that given two lists determines if the first list is
-contained within the second list, if the second list is contained within
-the first list, if both lists are contained within each other or if none
-of these are true.
+## Instructions
 
-Specifically, a list A is a sublist of list B if by dropping 0 or more elements
-from the front of B and 0 or more elements from the back of B you get a list
-that's completely equal to A.
+Given any two lists `A` and `B`, determine if:
+
+- List `A` is equal to list `B`; or
+- List `A` contains list `B` (`A` is a superlist of `B`); or
+- List `A` is contained by list `B` (`A` is a sublist of `B`); or
+- None of the above is true, thus lists `A` and `B` are unequal
+
+Specifically, list `A` is equal to list `B` if both lists have the same values in the same order.
+List `A` is a superlist of `B` if `A` contains a contiguous sub-sequence of values equal to `B`.
+List `A` is a sublist of `B` if `B` contains a contiguous sub-sequence of values equal to `A`.
 
 Examples:
 
- * A = [1, 2, 3], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [3, 4, 5], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [3, 4], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [1, 2, 3], B = [1, 2, 3], A is equal to B
- * A = [1, 2, 3, 4, 5], B = [2, 3, 4], A is a superlist of B
- * A = [1, 2, 4], B = [1, 2, 3, 4, 5], A is not a superlist of, sublist of or equal to B
+- If `A = []` and `B = []` (both lists are empty), then `A` and `B` are equal
+- If `A = [1, 2, 3]` and `B = []`, then `A` is a superlist of `B`
+- If `A = []` and `B = [1, 2, 3]`, then `A` is a sublist of `B`
+- If `A = [1, 2, 3]` and `B = [1, 2, 3, 4, 5]`, then `A` is a sublist of `B`
+- If `A = [3, 4, 5]` and `B = [1, 2, 3, 4, 5]`, then `A` is a sublist of `B`
+- If `A = [3, 4]` and `B = [1, 2, 3, 4, 5]`, then `A` is a sublist of `B`
+- If `A = [1, 2, 3]` and `B = [1, 2, 3]`, then `A` and `B` are equal
+- If `A = [1, 2, 3, 4, 5]` and `B = [2, 3, 4]`, then `A` is a superlist of `B`
+- If `A = [1, 2, 4]` and `B = [1, 2, 3, 4, 5]`, then `A` and `B` are unequal
+- If `A = [1, 2, 3]` and `B = [1, 3, 2]`, then `A` and `B` are unequal
 
-## Running tests
+## Slow tests
 
-Execute the tests with:
+One or several of the tests of this exercise have been tagged as `:slow`, because they might take a long time to finish. For this reason, they will not be run on the platform by the automated test runner. If you are solving this exercise directly on the platform in the web editor, you might want to consider downloading this exercise to your machine instead. This will allow you to run all the tests and check the efficiency of your solution.
 
-```bash
-$ elixir bob_test.exs
-```
+## Source
 
-(Replace `bob_test.exs` with the name of the test file.)
+### Contributed to by
 
-
-### Pending tests
-
-In the test suites, all but the first test have been skipped.
-
-Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
-
-For example:
-
-```elixir
-# @tag :pending
-test "shouting" do
-  assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
-end
-```
-
-Or, you can enable all the tests by commenting out the
-`ExUnit.configure` line in the test suite.
-
-```elixir
-# ExUnit.configure exclude: :pending, trace: true
-```
-
-For more detailed information about the Elixir track, please
-see the [help page](http://exercism.io/languages/elixir).
-
-
+- @angelikatyborska
+- @Cohen-Carlisle
+- @dalexj
+- @devonestes
+- @jason-kerney
+- @kytrinyx
+- @lpil
+- @lsimoneau
+- @MarcosX
+- @neenjaw
+- @parkerl
+- @pminten
+- @rubysolo
+- @sotojuan
+- @Teapane
+- @waiting-for-dev
