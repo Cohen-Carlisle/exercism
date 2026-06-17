@@ -1,52 +1,54 @@
 # Flatten Array
 
-Take a nested list and return a single flattened list with all values except nil/null.
+Welcome to Flatten Array on Exercism's Elixir Track.
+If you need help running the tests or submitting your code, check out `HELP.md`.
 
-The challenge is to write a function that accepts an arbitrarily-deep nested list-like structure and returns a flattened structure without any nil/null values.
+## Introduction
 
-For Example
+A shipment of emergency supplies has arrived, but there's a problem.
+To protect from damage, the items — flashlights, first-aid kits, blankets — are packed inside boxes, and some of those boxes are nested several layers deep inside other boxes!
 
-input: [1,[2,3,null,4],[null],5]
+To be prepared for an emergency, everything must be easily accessible in one box.
+Can you unpack all the supplies and place them into a single box, so they're ready when needed most?
 
-output: [1,2,3,4,5]
+## Instructions
 
-## Running tests
+Take a nested array of any depth and return a fully flattened array.
 
-Execute the tests with:
+Note that some language tracks may include null-like values in the input array, and the way these values are represented varies by track.
+Such values should be excluded from the flattened array.
 
-```bash
-$ elixir flatten_array_test.exs
-```
+Additionally, the input may be of a different data type and contain different types, depending on the track.
 
-### Pending tests
+Check the test suite for details.
 
-In the test suites, all but the first test have been skipped.
+## Example
 
-Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+input: `[1, [2, 6, null], [[null, [4]], 5]]`
 
-For example:
+output: `[1, 2, 6, 4, 5]`
 
-```elixir
-# @tag :pending
-test "shouting" do
-  assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
-end
-```
+## Elixir-specific changes
 
-Or, you can enable all the tests by commenting out the
-`ExUnit.configure` line in the test suite.
-
-```elixir
-# ExUnit.configure exclude: :pending, trace: true
-```
-
-For more detailed information about the Elixir track, please
-see the [help page](http://exercism.io/languages/elixir).
+The above description of this exercise is shared between all Exercism tracks. It speaks of "arrays", but there is no such data type in Elixir. This exercise is about **lists**.
 
 ## Source
 
-Interview Question [https://reference.wolfram.com/language/ref/Flatten.html](https://reference.wolfram.com/language/ref/Flatten.html)
+### Created by
 
-## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+- @bernardoamc
+
+### Contributed to by
+
+- @angelikatyborska
+- @Cohen-Carlisle
+- @devonestes
+- @jwworth
+- @lpil
+- @neenjaw
+- @parkerl
+- @sotojuan
+
+### Based on
+
+Interview Question - https://reference.wolfram.com/language/ref/Flatten.html
