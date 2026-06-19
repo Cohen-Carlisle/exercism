@@ -9,13 +9,13 @@ defmodule LogLevel do
   def to_label(_, _), do: :unknown
 
   def alert_recipient(level, is_legacy) do
-    case to_label(level, is_legacy) do
-      level when level in [:trace, :debug, :info, :warning] -> nil
-      level when level in [:error, :fatal] -> :ops
-      _ -> handle_unknown(is_legacy)
+    label = to_label(level, is_legacy)
+
+    case {label, is_legacy} do
+      {label, _} when label in [:trace, :debug, :info, :warning] -> false
+      {label, _} when label in [:error, :fatal] -> :ops
+      {:unknown, true} -> :dev1
+      {:unknown, false} -> :dev2
     end
   end
-
-  defp handle_unknown(true), do: :dev1
-  defp handle_unknown(false), do: :dev2
 end
