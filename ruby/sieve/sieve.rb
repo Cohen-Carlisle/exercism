@@ -1,19 +1,21 @@
 class Sieve
-  def initialize(n)
-    @prime = (2..n).each_with_object({}) { |n, h| h[n] = true }
+  def initialize(upto)
+    @upto = upto
+    @primes = [false, false, true].concat((3..upto).map { |n| n.odd? })
   end
 
   def primes
-    last_possible_prime = @prime.length + 1
-    limit = Math.sqrt(last_possible_prime)
-    (2..limit).each do |n|
-      next unless @prime[n]
+    return [] if @upto < 2
+    limit = Math.sqrt(@upto)
+    (3..limit).each do |n|
+      next unless @primes[n]
       m = n ** 2
-      while m <= last_possible_prime
-        @prime[m] = false
-        m += n
+      i = 2 * n
+      while m <= @upto
+        @primes[m] = false
+        m += i
       end
     end
-    @prime.select { |_, is_prime| is_prime }.keys
+    @primes.each_with_object([]).with_index { |(is_prime, array), index| array << index if is_prime }
   end
 end
